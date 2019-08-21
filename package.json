@@ -1,0 +1,36 @@
+{
+	"name": "launcher",
+	"version": "1.0.0",
+	"description": "Lauchner",
+	"author": "tsmr",
+	"main": "./src/main.js",
+	"scripts": {
+		"start": "electron .",
+		"pack": "electron-builder --dir",
+		"dist": "electron-builder",
+		"postinstall": "electron-builder install-app-deps"
+	},
+	"build": {
+		"appId": "launcher",
+		"productName": "Lauchner",
+		"copyright": "Copyright (c) 2019 tsmr",
+		"buildVersion": "1.0.0",
+		"win": {
+			"target": "NSIS",
+			"icon": "./assets/img/logo.png"
+		},
+		"nsis": {
+			"artifactName": "${productName}Setup.${ext}",
+			"uninstallDisplayName": "${productName}"
+		}
+	},
+	"dependencies": {
+		"auto-launch": "^5.0.5",
+		"electron-window-position": "^1.0.1",
+		"socket.io": "^2.2.0"
+	},
+	"devDependencies": {
+		"electron": "^6.0.3",
+		"electron-builder": "^21.2.0"
+	}
+}

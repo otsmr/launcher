@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    margin: 0;
+    overflow: hidden;
+}
+.main {
+    
+}
+input {
+    width: calc(100% - 60px);
+    padding: 15px;
+    font-size: 25px;
+    height: 63px;
+    background: #eee;
+    margin: 24px auto;
+    color: #000;
+    outline: none;
+    display: block;
+    box-shadow: 0 2px 4px 0 #8E8E8E;
+    border: 1px solid #929292;
+    border-radius: 5px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    width: calc(100% - 60px);
+    margin: 0 auto;
+    background: #eee;
+    box-shadow: 0 2px 4px 0 #8E8E8E;
+    margin-top: -14px;
+    border: 1px solid #929292;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow: hidden;
+    position: relative;
+    display: none;
+}
+
+ul li {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid #D5D5D5;
+}
+ul li:last-child {
+    border: 0;
+}
+ul li:hover, ul li.aktiv {
+    background: rgb(250, 250, 250)
+}
+ul li.exact {
+    background: #fff;
+    position: relative;
+}
+ul li.exact::after {
+    content: "Exact";
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    background: #111;
+    padding: 2px 3px;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 7px;
+}
+
+ul li .img {
+    width: 40px;
+    min-width: 43px;
+    padding: 12px;
+}
+ul li .img img {
+    width: 100%;
+}
+
+ul li .text > * {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+}
+ul li .text h1 {
+    color: #000;
+    font-size: 17px;
+    font-weight: normal;
+}
+ul li .text p {
+    color: #9d9d9d;
+    font-size: 13px;
+}
