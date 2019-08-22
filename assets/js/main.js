@@ -61,7 +61,7 @@ class List {
         const itemBottom = itemTop + $aktiv.height();
 
         if (itemBottom > bottom) {
-            this.$ul[0].scrollTop = $aktiv[0].offsetTop - this.$ul.height() + $aktiv.height();
+            this.$ul[0].scrollTop = $aktiv[0].offsetTop - this.$ul.height() + $aktiv.height() + 10;
         }
         if (itemTop < top) {
             this.$ul[0].scrollTop = $aktiv[0].offsetTop;
@@ -70,6 +70,7 @@ class List {
     }
 
     enter () {
+
         const $aktiv = this.$ul.children(".aktiv");
 
         if ($aktiv.length === 1) {
@@ -86,8 +87,6 @@ class List {
                     ipcRenderer.send('run', id, input);
                 }, 20);
             }
-
-
         }
 
     }

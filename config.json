@@ -27,13 +27,19 @@
                     "to": "en"
                 },
                 "waitAfterInput": 1000,
-                "prefix": "$"
+                "prefix": "$ "
             }
         },
         "battery.launcher": {
             "enabled": true,
             "config": {
                 "prefix": "battery"
+            }
+        },
+        "duden.dudende": {
+            "enabled": true,
+            "config": {
+                "prefix": "duden "
             }
         },
         "explorer.launcher": {
@@ -81,6 +87,15 @@
                         "icon": "$imgPath/google.png",
                         "url": "https://www.google.de/search?q=$query",
                         "engine": "google",
+                        "suggestqueries": true 
+                    },
+                    {
+                        "prefix": "w ",
+                        "name": "Wikipedia: <b>$query</b>",
+                        "desc": "Auf Wikipedia nach $query suchen",
+                        "icon": "$imgPath/wikipedia.png",
+                        "url": "https://de.wikipedia.org/w/index.php?search=$query",
+                        "engine": "wikipedia",
                         "suggestqueries": true 
                     },
                     {

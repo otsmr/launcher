@@ -5,6 +5,7 @@ const Module = require("../module");
 const suggestqueries = {
     google: require("./suggestqueries/google"),
     duckduckgo: require("./suggestqueries/duckduckgo"),
+    wikipedia: require("./suggestqueries/wikipedia")
 }
 
 class Search extends Module {
@@ -121,14 +122,19 @@ class Search extends Module {
                     
                     switch (engine.engine) {
                         case "google": 
-                        suggestqueries.google(q, (data) => {
-                            this.addSuggest(engine, view, data);
-                        })
+                            suggestqueries.google(q, (data) => {
+                                this.addSuggest(engine, view, data);
+                            })
                         break;
                         case "duckduckgo": 
-                        suggestqueries.duckduckgo(q, (data) => {
-                            this.addSuggest(engine, view, data);
-                        })
+                            suggestqueries.duckduckgo(q, (data) => {
+                                this.addSuggest(engine, view, data);
+                            })
+                        break;
+                        case "wikipedia": 
+                            suggestqueries.wikipedia(q, (data) => {
+                                this.addSuggest(engine, view, data);
+                            })
                         break;
                     }
                 }, config.waitAfterInput || 500);

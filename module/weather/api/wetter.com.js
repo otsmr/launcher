@@ -1,6 +1,5 @@
 const request = require("request");
 const cheerio = require('cheerio');
-const fs = require("fs");
 const suggest = "https://sayt.wettercomassets.com/suggest/search/"
 const apiUrl = "https://www.wetter.com/wetter_aktuell/wettervorhersage/16_tagesvorhersage/deutschland/"
 
