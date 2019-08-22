@@ -5,9 +5,8 @@ require("./globalconfig");
 const fs = require("fs");
 const search = require("./search");
 const { shell } = require("electron");
-const exec = require('child_process').exec;
+const { exec, spawn } = require('child_process');
 
-const buildlist = require("./../buildlist");
 const clipboardy = require("clipboardy");
 
 class HandleList {
@@ -26,12 +25,17 @@ class HandleList {
 
     getList () {
 
-        try {
-            let json = fs.readFileSync(process.launcher.appData + "list.json").toString();
-            return JSON.parse(json);
-        } catch (error) {
-            return [];
-        }
+        let json = [];
+        json.push({
+            "name": "Einstellungen",
+            "desc": "Einstellungen für den Launcher",
+            "icon": process.launcher.imgPath + "/logo.png",
+            "icontyp": "file",
+            "type": "application",
+            "path": process.launcher.appData + "/config.json",
+            "exact": "config"
+        })
+        return json;
 
     }
 
@@ -123,10 +127,18 @@ class HandleList {
             if (query[0] === " ") query = query.substr(1);
             return this.displayModules(query);
         }
+
+        let list = this.getList();
         
         for (const item of this.registered){
 
             if (item.always && item.always(query)) return;
+            if (item.addToList) {
+                const add = item.addToList();
+                if (typeof add === "object" && add.length > 0) {
+                    list = list.concat(add);
+                }
+            }
             
             if (!item.prefix || !query.startsWith(item.prefix)) continue;
             let q = query.replace(item.prefix, "");
@@ -139,7 +151,7 @@ class HandleList {
         if (query[0] === ">") {
 
             let res = [];
-            for (const item of this.getList()) {
+            for (const item of list) {
                 if ((item.exact || item.prefix) && item.name) res.push(item);
             }
             for (const item of this.registered) {
@@ -154,11 +166,13 @@ class HandleList {
 
         let exact = false;
         let searchArray = [];
-
-        for (const item of this.getList()) {
+        let id = 0;
+        for (const item of list) {
             if (item.exact && item.exact === query) {
                 exact = item;
             }
+            item.id = id;
+            id++;
             if (!item.exact) searchArray.push(item);
         }
         
@@ -193,7 +207,7 @@ class HandleList {
     }
 
     run (id, input) {
-
+        
         if (!this.json) return this.mainWindow.toggleMe(true);
 
         let run = false;
@@ -205,7 +219,9 @@ class HandleList {
         }
 
         if (!run) return this.mainWindow.toggleMe(true);
-
+        if (run.onSelect) {
+            return run.onSelect(input);
+        }
         if (!run.type) {
 
             for (const item of this.registered){
@@ -224,14 +240,12 @@ class HandleList {
         if (!run.closeWindowNot) {
             this.mainWindow.toggleMe(true)
         }
+        
         switch (run.type) {
             case "copy": clipboardy.writeSync(run.copy); break;
             case "application": shell.openItem(run.path); break;
             case "command": exec(run.command); break;
-            case "updatelist": 
-                buildlist();
-                this.mainWindow.toggleMe(false)
-            break;
+            case "commandps": spawn("powershell.exe", [run.command]);break;
             case "shortcut": exec(`powershell "invoke-item '${run.path}'"`); break;
             case "website": shell.openExternal(run.url); break;
         }

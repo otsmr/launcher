@@ -13,8 +13,8 @@ switch (process.platform) {
 }
 
 process.launcher = {
-    iconPath: userdata + "/icons/",
     rootPath: root,
+    modulePathData: userdata + "/moduldata/",
     modulePath: root + "/module/", 
     desktopPath: app.getPath("desktop") + "/",
     home: app.getPath("home"),
@@ -45,9 +45,8 @@ process.launcher = {
     },
 }
 
-if (!fs.existsSync(process.launcher.iconPath)) {
-    fs.mkdirSync(process.launcher.iconPath);
-    fs.mkdirSync(process.launcher.iconPath + "/ext/");
+if (!fs.existsSync(process.launcher.modulePathData)) {
+    fs.mkdirSync(process.launcher.modulePathData);
 }
 
 // if (!fs.existsSync(process.launcher.config)) {

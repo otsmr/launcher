@@ -1,8 +1,8 @@
 const { app, globalShortcut } = require('electron');
-const WindowPosition = require("electron-window-position");
-const windowHelper = require("./core/window");
 const path = require("path");
-const TrayIcon = require("./core/tray");
+const WindowPosition = require("electron-window-position");
+const windowHelper = require("./app/window");
+const TrayIcon = require("./app/tray");
 const ipc = require("./core/ipc");
 const AutoLaunch = require("auto-launch");
 require("./core/globalconfig");
@@ -67,11 +67,10 @@ if (app.requestSingleInstanceLock()) {
 
         mainWindow.toggleMe = (hide = "n") => {
 
-            if ((hide && hide !== "n") || mainWindow.getPosition()[1] > 0) {
+            if ((hide && hide !== "n") || (hide === "n" && mainWindow.getPosition()[1] > 0)) {
                 mainWindow.webContents.send('toinput', "");
                 mainWindow.setPosition(pos.x, -500);
                 mainWindow.webContents.send('hide');
-                // mainWindow.hide()
             } else {
                 mainWindow.setPosition(pos.x, 30);
                 mainWindow.focus()

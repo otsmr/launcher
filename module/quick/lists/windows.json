@@ -1,0 +1,110 @@
+[
+    {
+        "name": "Herunterfahren",
+        "desc": "Computer herunterfahren",
+        "icon": "$imgPath/reboot.svg",
+        "icontyp": "file",
+        "type": "command",
+        "command": "shutdown -s -t 0",
+        "exact": "down"
+    },
+    {
+        "name": "Neu starten",
+        "desc": "Computer neu starten",
+        "icon": "$imgPath/reboot.svg",
+        "icontyp": "file",
+        "type": "command",
+        "command": "shutdown -s -r -t 0",
+        "exact": "restart"
+    },
+    {
+        "name": "Abmelden",
+        "desc": "Abmelden",
+        "icon": "$imgPath/reboot.svg",
+        "icontyp": "file",
+        "type": "command",
+        "command": "shutdown -l",
+        "exact": "logoff"
+    },
+    {
+        "name": "Sperren",
+        "desc": "Computer sperren",
+        "icon": "$imgPath/reboot.svg",
+        "icontyp": "file",
+        "type": "command",
+        "command": "rundll32.exe user32.dll, LockWorkStation",
+        "exact": "lock"
+    },
+    {
+        "name": "Energiesparmodus",
+        "desc": "Computer in den Energiesparmodus versetzen",
+        "icon": "$imgPath/reboot.svg",
+        "icontyp": "file",
+        "type": "command",
+        "command": "powershell \"Add-Type -Assemblyname System.Windows.Forms; [System.Windows.Forms.Application]::SetSuspendState( 'Suspend', $false, $false)\"",
+        "exact": "sleep"
+    },
+    {
+        "name": "Powershell",
+        "desc": "Öffnet die Powershell",
+        "icon": "$imgPath/windows/powershell.png",
+        "icontyp": "file",
+        "type": "command",
+        "command": "cd  %userprofile% & start cmd /c powershell",
+        "exact": "ps"
+    },
+    {
+        "name": "Kommandozeile",
+        "desc": "Öffnet die Kommandozeile",
+        "icon": "$imgPath/windows/cmd.png",
+        "icontyp": "file",
+        "type": "command",
+        "command": "cd  %userprofile% & start cmd.exe",
+        "exact": "cmd"
+    },
+    {
+        "name": "Snipping Tool",
+        "desc": "Screenshot erstellen einfach gemacht.",
+        "type": "application",
+        "icon": "$imgPath/windows/SnippingTool.png",
+        "icontyp": "file",
+        "path": "C:/WINDOWS/system32/SnippingTool.exe",
+        "exact": "snip"
+    },
+    {
+        "name": "Task-Manager",
+        "desc": "Task-Manager öffnen",
+        "type": "application",
+        "icon": "$imgPath/windows/taskmgr.png",
+        "icontyp": "file",
+        "path": "C:/WINDOWS/system32/taskmgr.exe",
+        "exact": "task"
+    },
+    {
+        "name": "Registry Editor",
+        "desc": "Registry Editor öffnen",
+        "type": "application",
+        "icon": "$imgPath/windows/regedit.png",
+        "icontyp": "file",
+        "path": "C:/WINDOWS/regedit.exe",
+        "exact": "regedit"
+    },
+    {
+        "name": "Explorer",
+        "desc": "Explorer öffnen",
+        "type": "command",
+        "icon": "$imgPath/windows/explorer.png",
+        "icontyp": "file",
+        "command": "explorer.exe",
+        "exact": "explorer"
+    },
+    {
+        "name": "Taschenrechner",
+        "desc": "Taschenrechner öffneen",
+        "type": "command",
+        "icon": "$imgPath/calc.svg",
+        "icontyp": "file",
+        "command": "calc.exe",
+        "exact": "calc"
+    }
+]

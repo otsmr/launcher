@@ -1,6 +1,18 @@
 {
     "hotkey": "alt+space",
     "module": {
+        "quick.launcher": {
+            "enabled": true,
+            "config": { }
+        },
+        "calc.launcher": {
+            "enabled": true,
+            "config": { }
+        },
+        "programms.launcher": {
+            "enabled": true,
+            "config": { }
+        },
         "translate.google": {
             "enabled": true,
             "config": {

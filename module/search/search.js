@@ -95,6 +95,7 @@ class Search extends Module {
                     this.setInput(engine.prefix + " ");
                     return true;
                 }
+                if (this.timer) clearTimeout(this.timer);
                 this.send({
                     ...engine,
                     icon: engine.icon.replace("$imgPath", process.launcher.imgPath),

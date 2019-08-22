@@ -1,6 +1,5 @@
 const { Menu, Tray, shell } = require('electron');
 const path = require("path");
-const buildlist = require("./../buildlist");
 
 class TrayIcon {
 
@@ -10,20 +9,7 @@ class TrayIcon {
 
         this.appIcon = new Tray(path.join(__dirname, "/../../assets/img/logo.png"));
 
-        const contextMenu = Menu.buildFromTemplate([{
-                label: 'Launcher öffnen',
-                click: () => {
-                    win.toggleMe();
-                }
-            },
-            {
-                label: 'Liste erneuern',
-                click: () => {
-                    buildlist();
-                    win.toggleMe();
-                }
-            },
-            { type: 'separator' },
+        const contextMenu = Menu.buildFromTemplate([
             {
                 label: 'Einstellungen',
                 click: () => {
@@ -32,7 +18,20 @@ class TrayIcon {
             },
             { type: 'separator' },
             {
-                label: 'Laucher beenden',
+                label: 'Launcher öffnen',
+                click: () => {
+                    win.toggleMe();
+                }
+            },
+            {
+                label: 'Launcher neu starten',
+                click: () => {
+                    app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+                    app.exit(0)
+                }
+            },
+            {
+                label: 'Launcher beenden',
                 click: () => {
                     app.quit();
                 }
