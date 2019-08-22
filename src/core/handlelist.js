@@ -10,27 +10,6 @@ const exec = require('child_process').exec;
 const buildlist = require("./../buildlist");
 const clipboardy = require("clipboardy");
 
-const modules = [ {
-    name: "translate.google",
-    install: require("../module/translate/translate")
-},{
-    name: "explorer.launcher",
-    install: require("../module/explorer/explorer")
-},{
-    name: "search.launcher",
-    install: require("../module/search/search")
-},{
-    name: "battery.launcher",
-    install: require("../module/battery/battery")
-},{
-    name: "screenshot.launcher",
-    install: require("../module/screenshot/screenshot")
-},{
-    name: "calc.launcher",
-    install: require("../module/calc/calc")
-}]
-
-
 class HandleList {
 
     constructor (mainWindow) {
@@ -38,6 +17,10 @@ class HandleList {
         this.registered = [];
         this.mainWindow = mainWindow;
         this.json = [];
+
+        mainWindow.on("focus", () =>{
+            this.importModule();
+        });
 
     }
 
@@ -52,12 +35,95 @@ class HandleList {
 
     }
 
+    importModule () {
+
+        const modules = process.launcher.config().module;
+
+        const installed = {};
+        for (const m of this.registered) {
+            try {
+                if (modules[m.id].enabled) {
+                    installed[m.id] = true;
+                    continue;
+                }
+            } catch (error) { }
+
+            this.registered.splice(this.registered.indexOf(m), 1);
+        }
+        for (let m in modules) {
+            if (modules[m].enabled) {
+                if (installed[m]) continue;
+                m = m.split(".")[0];
+                const installer = require(process.launcher.modulePath + m + "/" + m);
+                installer(this, this.mainWindow, search);
+            }
+        }
+
+    }
+
     register (item) {
         this.registered.push(item);
     }
 
+    displayModules (query) {
+
+        const commands = query.split(" ");
+        let list = [];
+        const modules = process.launcher.config().module;
+
+        let item = false;
+        for (const id in modules) {
+            if (id === commands[0]) {
+                item = modules[id];
+                continue;
+            }
+            list.push({
+                icon: process.launcher.imgPath + "box.svg",
+                name: "Modul: " + id + ` (${modules[id].config.prefix})`,
+                desc: (modules[id].enabled) ? "Aktiviert" : "Deaktiviert",
+                type: "toinput",
+                toinput: "! " + id
+            });
+        }
+        if (commands[0] !== "") list = search.list(commands[0], list);
+            
+        
+        list.unshift({
+            name: "Module",
+            desc: "Optionen: $id -disable, -enable",
+            icon: process.launcher.imgPath + "box.svg"
+        });
+        if (item){
+            if (commands[1] === "-enable" || commands[1] === "-disable") {
+                if (commands[1] === "-disable") {
+                    item.enabled = false;
+                } else {
+                    item.enabled = true;
+                }
+                process.launcher.config(true);
+                this.importModule();
+                return this.setInput("! " + commands[0]);
+            }
+
+            list.unshift({
+                icon: process.launcher.imgPath + "box.svg",
+                name: "Modul: <b>" + commands[0] + `</b> (${item.config.prefix})`,
+                desc: (item.enabled) ? "Aktiviert" : "Deaktiviert",
+            });
+        }
+        
+        return this.send(list)
+
+    }
+
     search (query) {
 
+        if (query.startsWith("!")) {
+            query = query.replace("!", "");
+            if (query[0] === " ") query = query.substr(1);
+            return this.displayModules(query);
+        }
+        
         for (const item of this.registered){
 
             if (item.always && item.always(query)) return;
@@ -111,11 +177,19 @@ class HandleList {
 
     }
 
-    send (list) {
+    send (list = []) {
+        
+        if (list.length === undefined) {
+            list = [list];
+        }
 
         this.json = list;
         this.mainWindow.webContents.send("add-to-list", list);
 
+    }
+
+    setInput (data) {
+        this.mainWindow.webContents.send("toinput", data);
     }
 
     run (id, input) {
@@ -170,12 +244,6 @@ class HandleList {
 
 module.exports = (mainWindow) => {
 
-    const handleList = new HandleList(mainWindow);
-
-    for (const m of modules) {
-        m.install(handleList, mainWindow);
-    }
-
-    return handleList;
+    return  new HandleList(mainWindow);
 
 }

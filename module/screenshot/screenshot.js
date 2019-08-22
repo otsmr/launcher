@@ -25,6 +25,8 @@ class Battery extends Module{
     register () {
 
         this.handlelist.register({
+            ...this.item,
+            id: this.id,
             prefix: this.prefix,
             noEnter: true,
             onInput: (name) => {

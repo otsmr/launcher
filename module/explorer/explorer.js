@@ -3,11 +3,10 @@
 const fs = require("fs");
 const Module = require("../module");
 const path = require("path");
-const search = require("../../core/search");
 
 class Explorer extends Module {
 
-    constructor (a, b) {
+    constructor (a, b, search) {
         super("explorer.launcher", a, b, {
             enabled: true,
             config: {
@@ -18,6 +17,7 @@ class Explorer extends Module {
                 prefix: "="
             }
         });
+        this.search = search;
 
         this.iconImages = {};
         this.imgPath = process.launcher.imgPath + "/explorer/";
@@ -41,6 +41,8 @@ class Explorer extends Module {
     register () {
 
         this.handlelist.register({
+            id: this.id,
+            ...this.item,
             prefix: this.prefix,
             noEnter: true,
             onInput: (input) => {
@@ -110,7 +112,7 @@ class Explorer extends Module {
         let array = folders.concat(files);
 
         if (query !== "") {
-            array = search.list(query, array);
+            array = this.search.list(query, array);
         }
         let copy = path.join(folder, query);
         if (this.config.show.copypath)  array.push({
@@ -144,8 +146,8 @@ class Explorer extends Module {
 
 }
 
-module.exports = (handlelist, mainWindow) => {
+module.exports = (handlelist, mainWindow, search) => {
 
-    new Explorer(handlelist, mainWindow).register();
+    new Explorer(handlelist, mainWindow, search).register();
 
 }

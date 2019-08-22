@@ -50,7 +50,13 @@ class Search extends Module {
                     }
                 ]
             }
-        })
+        });
+
+        this.item = {
+            name: "Suchmaschinen",
+            icontype: "file",
+            icon: process.launcher.imgPath + "duck.svg"
+        }
         
     }
 
@@ -58,6 +64,8 @@ class Search extends Module {
     register () {
 
         this.handlelist.register({
+            ...this.item,
+            id: this.id,
             always: (query) => {
                 return this.check(query);
             }

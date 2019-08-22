@@ -1,15 +1,23 @@
 "use strict";
 const translate = require("node-google-translate-skidz");
 const languages = require("./languages");
-const search = require("../../core/search");
+const Module = require("./../module");
 
-class Translate {
+class Translate extends Module {
     
-    constructor (handlelist, mainWindow) {
-        this.id = "translate.google";
-
-        this.handlelist = handlelist;
-        this.mainWindow = mainWindow;
+    constructor (a, b, search) {
+        super("translate.google", a, b, {
+            "enabled": true,
+            "config": {
+                "translate": {
+                    "from": "de",
+                    "to": "en"
+                },
+                "waitAfterInput": 1000,
+                "prefix": "$"
+            }
+        });
+        this.search = search;
 
         this.item = {
             name: "Übersetzen",
@@ -18,30 +26,13 @@ class Translate {
             icontyp: "file"
         }
 
-        try {
-            this.config = process.launcher.config().module[this.id].config;
-        } catch (error) {
-            process.launcher.config().module[this.id] = {
-                "enabled": true,
-                "config": {
-                    "translate": {
-                        "from": "de",
-                        "to": "en"
-                    },
-                    "waitAfterInput": 1000,
-                    "prefix": "$"
-                }
-            }
-            process.launcher.config(true);
-            this.config = process.launcher.config().module[this.id].config;
-        }
-
-        this.prefix = this.config.prefix;
     }
 
     register () {
 
         this.handlelist.register({
+            ...this.item,
+            id: this.id,
             prefix: this.prefix,
             noEnter: true,
             onInput: (input) => {
@@ -63,17 +54,6 @@ class Translate {
         process.launcher.config(true);
         return this.setInput(this.prefix + " ");
 
-    }
-
-    send (list) {
-
-        this.handlelist.json = list;
-        this.mainWindow.webContents.send("add-to-list", list);
-
-    }
-
-    setInput (data) {
-        this.mainWindow.webContents.send("toinput", data);
     }
 
     changeLang (input) {
@@ -102,7 +82,7 @@ class Translate {
         }
 
         let list = [];
-        if (data[1]) list = search.list(data[1], array);
+        if (data[1]) list = this.search.list(data[1], array);
         else list = array;
 
         for (const item of languages) {
@@ -173,8 +153,8 @@ class Translate {
                 let list = []
                 try {
                     list.push({
-                        name: "",
-                        desc: result.translation,
+                        name: result.translation,
+                        desc: "",
                         icon: process.launcher.imgPath + "/copy.svg",
                         icontyp: "file",
                         type: "copy",
@@ -205,6 +185,6 @@ class Translate {
 
 }
 
-module.exports = (handlelist, mainWindow) => {
-    new Translate(handlelist, mainWindow).register();
+module.exports = (handlelist, mainWindow, search) => {
+    new Translate(handlelist, mainWindow, search).register();
 }

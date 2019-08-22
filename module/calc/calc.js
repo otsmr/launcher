@@ -22,6 +22,8 @@ class Battery extends Module {
     register () {
 
         this.handlelist.register({
+            ...this.item,
+            id: this.id,
             always: (query) => {
                 return this.calc(query);
             }

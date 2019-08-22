@@ -1,6 +1,7 @@
 "use strict";
 
-const powershell = require("../../console/powershell");
+const powershell = require("../../../module/packages/powershell");
+
 module.exports = new class {
 
     constructor () {

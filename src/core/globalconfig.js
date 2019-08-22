@@ -15,6 +15,7 @@ switch (process.platform) {
 process.launcher = {
     iconPath: userdata + "/icons/",
     rootPath: root,
+    modulePath: root + "/module/", 
     desktopPath: app.getPath("desktop") + "/",
     home: app.getPath("home"),
     appData: userdata,

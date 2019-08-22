@@ -1,5 +1,5 @@
 "use strict";
-const powershell = require("../../console/powershell");
+const powershell = require("../packages/powershell");
 
 const Module = require("../module");
 
@@ -25,6 +25,8 @@ class Battery extends Module {
     register () {
 
         this.handlelist.register({
+            ...this.item,
+            id: this.id,
             prefix: this.prefix,
             noEnter: true,
             onInput: (search) => {
