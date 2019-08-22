@@ -13,8 +13,8 @@ const lists = {
 }
 
 const icons = {
-    "application": process.lauchner.imgPathPlatform + "application.png",
-    "command": process.lauchner.imgPath + "command.svg",
+    "application": process.launcher.imgPathPlatform + "application.png",
+    "command": process.launcher.imgPath + "command.svg",
 }
 
 /*
@@ -24,20 +24,22 @@ list: {
     icon: String: [path],
     icontyp: [file],
     path: String // Pfad zu einer Datei...
-    type: [website, application, command, window, updatelist, shortcut, toinput],
+    type: [copy,  website, application, command, window, updatelist, shortcut, toinput],
     open: [help] // ( nur bei window)
     toinput: // Input veränndern
     url: // website
+    // copy// copy
     exact: String
 }
 */
+// (Get-WmiObject win32_battery)
 
 
 module.exports = () => {
 
     let list = [];
 
-    for (const listitem of lists[process.lauchner.platform]) {
+    for (const listitem of lists[process.launcher.platform]) {
         let adds = listitem.json;
         for (let add of adds) {
 

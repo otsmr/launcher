@@ -8,8 +8,6 @@ module.exports = new class {
     }
 
     run (befehl) {
-        // console.log(`powershell.exe "${befehl}"`);
-        // return;
         try {
             return spawnSync("powershell.exe", [befehl], { encoding : 'utf8' }).stdout;
         } catch (error) {
@@ -29,7 +27,6 @@ module.exports = new class {
             return JSON.parse(this.run(befehl));
         } catch (error) {
             console.log(error);
-
             return false;
         }
 

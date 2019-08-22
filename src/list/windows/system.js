@@ -4,7 +4,7 @@ module.exports = new class {
 
     get json () {
 
-        const img = process.lauchner.imgPath;
+        const img = process.launcher.imgPath;
 
         return [
             {
@@ -58,7 +58,7 @@ module.exports = new class {
                 icon: img + "windows/powershell.png",
                 icontyp: "file",
                 type: "command",
-                command: `cd  %userprofile% & start powershell.exe`,
+                command: `cd  %userprofile% & start cmd /c powershell`,
                 exact: "ps"
             },
             {
@@ -107,13 +107,13 @@ module.exports = new class {
                 exact: "explorer"
             },
             {
-                name: "Launcher Explorer",
-                desc: "Launcher Explorer öffnen mit \"=\"",
-                type: "toinput",
-                icon: img + "windows/explorer.png",
+                name: "Taschenrechner",
+                desc: "Taschenrechner öffneen",
+                type: "command",
+                icon: img + "calc.svg",
                 icontyp: "file",
-                toinput: `=`,
-                exact: "="
+                command: `calc.exe`,
+                exact: "calc"
             }
         ]
 

@@ -11,29 +11,27 @@ body {
 }
 input {
     width: calc(100% - 60px);
-    padding: 15px;
+    padding: 10px;
     font-size: 25px;
     height: 63px;
-    background: #eee;
+    background: rgba(59, 59, 59, 0.733);
     margin: 24px auto;
-    color: #000;
+    color: #fff;
     outline: none;
     display: block;
-    box-shadow: 0 2px 4px 0 #8E8E8E;
-    border: 1px solid #929292;
-    border-radius: 5px;
+    box-shadow: 0 2px 20px -10 rgb(0, 0, 0);
+    border: 1px solid #7e7e7edc;
+    border-radius: 0px;
 }
 
 ul {
     list-style: none;
     padding: 0;
-    width: calc(100% - 60px);
+    width: calc(100% - 40px);
     margin: 0 auto;
-    background: #eee;
-    box-shadow: 0 2px 4px 0 #8E8E8E;
+    background: #d8d8d8;
     margin-top: -14px;
-    border: 1px solid #929292;
-    border-radius: 5px;
+    border: 1px solid #7e7e7edc;
     max-height: 300px;
     overflow: hidden;
     position: relative;
@@ -45,13 +43,14 @@ ul li {
     -webkit-box-align: center;
     align-items: center;
     cursor: pointer;
-    border-bottom: 1px solid #D5D5D5;
+    border-bottom: 1px solid #c0c0c0;
+    padding: 2px 0
 }
 ul li:last-child {
     border: 0;
 }
 ul li:hover, ul li.aktiv {
-    background: rgb(250, 250, 250)
+    background:#f0efef;
 }
 ul li.exact {
     background: #fff;
@@ -70,9 +69,10 @@ ul li.exact::after {
 }
 
 ul li .img {
-    width: 40px;
-    min-width: 43px;
+    width: 50px;
+    min-width: 50px;
     padding: 12px;
+    padding-top: 14px
 }
 ul li .img img {
     width: 100%;
@@ -87,10 +87,10 @@ ul li .text > * {
 }
 ul li .text h1 {
     color: #000;
-    font-size: 17px;
+    font-size: 19px;
     font-weight: normal;
 }
 ul li .text p {
     color: #9d9d9d;
-    font-size: 13px;
+    font-size: 14px;
 }

@@ -1,4 +1,4 @@
-const { Menu, Tray } = require('electron');
+const { Menu, Tray, shell } = require('electron');
 const path = require("path");
 const buildlist = require("./../buildlist");
 
@@ -15,11 +15,19 @@ class TrayIcon {
                 click: () => {
                     win.toggleMe();
                 }
-            },{
+            },
+            {
                 label: 'Liste erneuern',
                 click: () => {
                     buildlist();
                     win.toggleMe();
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Einstellungen',
+                click: () => {
+                    shell.openItem(process.launcher.appData + "/config.json")
                 }
             },
             { type: 'separator' },

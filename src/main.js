@@ -41,11 +41,12 @@ if (app.requestSingleInstanceLock()) {
             width: 600,
             height: 400,
             maxHeight: 400,
-            show: false,
+            show: true,
+            // show: false,
             frame: false,
             resizable: true,
             transparent: true,
-            vibrancy: 'light',
+            vibrancy: 'dark',
             minimizable: false,
             maximizable: false,
             alwaysOnTop: true,
@@ -64,18 +65,31 @@ if (app.requestSingleInstanceLock()) {
         ipc(app, mainWindow);
         new TrayIcon(app, mainWindow);
 
-        // mainWindow.webContents.toggleDevTools({ mode: 'undocked' })
+        mainWindow.toggleMe = (hide = "n") => {
 
-        mainWindow.toggleMe = () => {
-            if (mainWindow.isVisible()) {
-                mainWindow.hide()
+            if ((hide && hide !== "n") || mainWindow.getPosition()[1] > 0) {
+                mainWindow.webContents.send('toinput', "");
+                mainWindow.setPosition(pos.x, -500);
+                mainWindow.webContents.send('hide');
+                // mainWindow.hide()
             } else {
-                mainWindow.show()
+                mainWindow.setPosition(pos.x, 30);
                 mainWindow.focus()
-                mainWindow.webContents.send('focued');
+                mainWindow.webContents.send('show');
             }
         }
-        const ret = globalShortcut.register('alt+space', () => {
+
+        let hotkey = false;
+        try {
+            hotkey = process.launcher.config().hotkey;
+        } catch (error) { }
+        if (!hotkey) {
+            hotkey = "alt+space";
+            process.launcher.config().hotkey = hotkey;
+            process.launcher.config(true);
+        }
+        
+        const ret = globalShortcut.register(hotkey, () => {
             mainWindow.toggleMe();
         });
 

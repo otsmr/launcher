@@ -1,27 +1,25 @@
 "use strict";
 const { ipcMain, ipcRenderer } = require('electron');
-const Handlelist = require("./handlelist");
+const handlelist = require("./handlelist");
 
 
 module.exports = (app, mainWindow) => {
 
-    const handlelist = new Handlelist();
+    const list = handlelist(mainWindow);
 
     ipcMain.on('list-search', (event, query) => {
-
-        event.reply("add-to-list", handlelist.search(query));
-        // ipcRenderer.send("add-to-list", )
+        list.search(query);
     })
 
-    ipcMain.on('run', (event, id) => {
+    ipcMain.on('run', (event, id, input) => {
 
-        handlelist.run(id);
+        list.run(id, input);
 
     });
 
     ipcMain.on('close', (event, query) => {
 
-        mainWindow.hide();
+        mainWindow.toggleMe(true);
 
     });
 

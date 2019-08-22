@@ -1,0 +1,78 @@
+{
+    "hotkey": "alt+space",
+    "module": {
+        "translate.google": {
+            "enabled": true,
+            "config": {
+                "translate": {
+                    "from": "de",
+                    "to": "en"
+                },
+                "waitAfterInput": 1000,
+                "prefix": "$"
+            }
+        },
+        "battery.launcher": {
+            "enabled": true,
+            "config": {
+                "prefix": "battery"
+            }
+        },
+        "explorer.launcher": {
+            "enabled": true,
+            "config": {
+                "show": {
+                    "copypath": true,
+                    "openinexplorer": true
+                },
+                "prefix": "="
+            }
+        },
+        "screenshot.launcher": {
+            "enabled": true,
+            "config": {
+                "prefix": "shot"
+            }
+        },
+        "search.launcher": {
+            "enabled": true,
+            "config": {
+                "engines": [
+                    {
+                        "prefix": "d ",
+                        "name": "DuckDuckGo Black: <b>$query</b>",
+                        "desc": "Auf DuckDuckGo nach $query suchen",
+                        "icon": "$imgPath/duckblack.png",
+                        "engine": "duckduckgo",
+                        "suggestqueries": true,
+                        "url": "https://duckduckgo.com/?q=$query&kae=d&kl=de-de&kak=-1&kax=-1&kaq=-1&kao=-1&kap=-1&kau=-1&kam=osm&kaj=m&k1=-1&t=h_&ia=web"
+                    },
+                    {
+                        "prefix": "dl ",
+                        "name": "DuckDuckGo: <b>$query</b>",
+                        "desc": "Auf DuckDuckGo nach $query suchen",
+                        "icon": "$imgPath/duck.svg",
+                        "engine": "duckduckgo",
+                        "url": "https://duckduckgo.com/?q=$query&kl=de-de&kak=-1&kax=-1&kaq=-1&kao=-1&kap=-1&kau=-1&kam=osm&kaj=m&k1=-1&t=h_&ia=web"
+                    },
+                    {
+                        "prefix": "g ",
+                        "name": "Google: <b>$query</b>",
+                        "desc": "Auf Google nach $query suchen",
+                        "icon": "$imgPath/google.png",
+                        "url": "https://www.google.de/search?q=$query",
+                        "engine": "google",
+                        "suggestqueries": true 
+                    },
+                    {
+                        "prefix": "hs ",
+                        "name": "https://<b>$query</b>",
+                        "desc": "Url öffnen",
+                        "icon": "$imgPath/http.svg",
+                        "url": "https:/$query"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -146,7 +146,7 @@ module.exports = new class {
             for(var i in opt[parm]){
                 var b = opt[parm][i];
                 for(var ii in query)
-                    if(b.toLowerCase() === query[ii].toLowerCase()){
+                    if(!b === "+" && b.toLowerCase() === query[ii].toLowerCase()){
                         var count = (treffer.join("").match(new RegExp(b, "g")) || []).length;
                         var count2 = (opt[parm].match(new RegExp(b, "g")) || []).length;
                         if(count < count2) treffer.push(b);

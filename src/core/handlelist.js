@@ -1,30 +1,50 @@
 "use strict";
-const fs = require("fs");
-const path = require('path')
-const search = require("./search");
-const {shell} = require("electron");
-const exec = require('child_process').exec;
+
 require("./globalconfig");
+
+const fs = require("fs");
+const search = require("./search");
+const { shell } = require("electron");
+const exec = require('child_process').exec;
+
 const buildlist = require("./../buildlist");
-const powershell = require("./../console/powershell");
+const clipboardy = require("clipboardy");
 
-module.exports = class {
+const modules = [ {
+    name: "translate.google",
+    install: require("../module/translate/translate")
+},{
+    name: "explorer.launcher",
+    install: require("../module/explorer/explorer")
+},{
+    name: "search.launcher",
+    install: require("../module/search/search")
+},{
+    name: "battery.launcher",
+    install: require("../module/battery/battery")
+},{
+    name: "screenshot.launcher",
+    install: require("../module/screenshot/screenshot")
+},{
+    name: "calc.launcher",
+    install: require("../module/calc/calc")
+}]
 
-    constructor () {
-        this.iconImages = {};
-        this.imgPath = process.lauchner.imgPath + "/explorer/";
-        fs.readdirSync(this.imgPath, (err, files) => {
-            if (err) return;
-            for (const file of files) {
-                this.extensions[file.name] = this.imgPath + file.name
-            }
-        });
+
+class HandleList {
+
+    constructor (mainWindow) {
+
+        this.registered = [];
+        this.mainWindow = mainWindow;
+        this.json = [];
+
     }
 
     getList () {
 
         try {
-            let json = fs.readFileSync(process.lauchner.appData + "list.json").toString();
+            let json = fs.readFileSync(process.launcher.appData + "list.json").toString();
             return JSON.parse(json);
         } catch (error) {
             return [];
@@ -32,115 +52,47 @@ module.exports = class {
 
     }
 
-    explorer (getDir) {
-        getDir = getDir.replace("=", "");
-        
-        let folder = process.lauchner.home + "/";
-        let query = getDir;
-        let addFolder = "";
-        if (getDir.indexOf("/") > -1) {
-            getDir.lastIndexOf("/")
-
-            query = getDir.slice(getDir.lastIndexOf("/") + 1, getDir.length);
-            folder += addFolder = getDir.slice(0, getDir.lastIndexOf("/"));
-            addFolder += "/"
-        }
-
-        let readDirs = fs.readdirSync(folder, {withFileTypes: true});
-        let folders = [];
-        let files = [];
-        let id = 0;
-        for (const file of readDirs) {
-            if (file.name[0] === ".") continue;
-            if (file.isDirectory()) {
-                folders.push({
-                    name: file.name,
-                    desc: "Ordner öffnen",
-                    icon: this.imgPath + "folder.png",
-                    icontype: "file",
-                    type: "toinput",
-                    toinput: "=" + addFolder +  file.name + "/",
-                    id
-                })
-
-            } else if(file.isFile()){
-                const ext = path.extname(file.name);
-                let icon = this.iconImages[ext + ".png"];
-                if (!icon) icon = this.imgPath + "file.png";
-                files.push({
-                    name: file.name,
-                    desc: "Datei öffnen",
-                    icontype: "file",
-                    type: "application",
-                    path: path.join(folder, file.name),
-                    icon, id
-                })
-            }
-            
-            id++;
-        }
-
-        let array = folders.concat(files);
-
-        if (query !== "") {
-            array = search.list(query, array);
-        }
-
-        return this.json = array;
-
+    register (item) {
+        this.registered.push(item);
     }
 
     search (query) {
 
-        const array = this.getList();
-        this.json = array;
+        for (const item of this.registered){
 
-        if (query.startsWith("d ")) {
-            query = query.replace("d ", "");
+            if (item.always && item.always(query)) return;
+            
+            if (!item.prefix || !query.startsWith(item.prefix)) continue;
+            let q = query.replace(item.prefix, "");
+            if (q[0] === " ") q = q.substr(1);
 
-            return this.json = [{
-                name: "DuckDuckGo: <b>" + query + "</b>",
-                desc: "Suche auf DuckDuckGo nach " + query,
-                type: "website",
-                icontype: "file",
-                id: 0,
-                icon: process.lauchner.imgPath + "duck.svg",
-                url: `https://duckduckgo.com/?q=${query}&kae=d&kl=de-de&kak=-1&kax=-1&kaq=-1&kao=-1&kap=-1&kau=-1&kam=osm&kaj=m&k1=-1&t=h_&ia=web`
-            }]
+            return item.onInput(q);
+
         }
 
         if (query[0] === ">") {
 
             let res = [];
-            for (const item of array) {
-                if (item.exact) res.push(item);
+            for (const item of this.getList()) {
+                if ((item.exact || item.prefix) && item.name) res.push(item);
             }
-
+            for (const item of this.registered) {
+                if ((item.exact || item.prefix) && item.name) res.push(item);
+            }
             if (query.length > 1) {
-                query = query.replace(">", "");
-                return search.list(query, res);
+                res = search.list(query.replace(">", ""), res);
             }
+            return this.send(res);
 
-            return res;
         }
-
-        if (query[0] === "=") {
-
-            return this.explorer(query);
-        }
-
 
         let exact = false;
+        let searchArray = [];
 
-        for (const item of array) {
+        for (const item of this.getList()) {
             if (item.exact && item.exact === query) {
                 exact = item;
-                break;
             }
-        }
-
-        let searchArray = [];
-        for (const item of array) {
             if (!item.exact) searchArray.push(item);
         }
         
@@ -149,16 +101,26 @@ module.exports = class {
         if (exact) {
             exact.isExact = true;
             res.unshift(exact);
+            if (exact.noEnter) {
+                const data = this.run(exact.id, query);
+                if (data) res = data;
+            }
         }
 
-        return res;
+        this.send(res);
 
     }
 
-    run (id) {
+    send (list) {
 
-        
-        if (!this.json) return;
+        this.json = list;
+        this.mainWindow.webContents.send("add-to-list", list);
+
+    }
+
+    run (id, input) {
+
+        if (!this.json) return this.mainWindow.toggleMe(true);
 
         let run = false;
         for (const item of this.json) {
@@ -167,18 +129,53 @@ module.exports = class {
                 break;
             }
         }
-        if (!run) return;
-        
+
+        if (!run) return this.mainWindow.toggleMe(true);
+
+        if (!run.type) {
+
+            for (const item of this.registered){
+    
+                if (!item.prefix || !input.startsWith(item.prefix)) continue;
+                if (item.onSelect) {
+                    let i = input.replace(item.prefix, "");
+                    if (i[0] === " ") i = i.substr(1);
+                    return item.onSelect(i, run);
+                }
+    
+            }
+
+        }
+
+        if (!run.closeWindowNot) {
+            this.mainWindow.toggleMe(true)
+        }
         switch (run.type) {
+            case "copy": clipboardy.writeSync(run.copy); break;
             case "application": shell.openItem(run.path); break;
             case "command": exec(run.command); break;
-            case "updatelist": buildlist(); break; // TrayICON
+            case "updatelist": 
+                buildlist();
+                this.mainWindow.toggleMe(false)
+            break;
             case "shortcut": exec(`powershell "invoke-item '${run.path}'"`); break;
             case "website": shell.openExternal(run.url); break;
         }
-
-        console.log(run);
+        
+        return false;
 
     }
+
+}
+
+module.exports = (mainWindow) => {
+
+    const handleList = new HandleList(mainWindow);
+
+    for (const m of modules) {
+        m.install(handleList, mainWindow);
+    }
+
+    return handleList;
 
 }

@@ -5,6 +5,12 @@ class List {
     constructor () {
         this.$ul = $("ul");
 
+        ipcRenderer.on("toinput", (event, data, search = true) => {
+            $("input").val(data).focus();
+            if (search) this.search();
+
+        })
+
         ipcRenderer.on("add-to-list", (event, json) => {
 
             if (json.length === 0) {
@@ -73,11 +79,11 @@ class List {
                 $("input").val(toinput).focus();
                 this.search();
             } else {
+                const input = $("input").val();
                 $("input").val("");
                 $("ul").empty().fadeOut(0);
                 setTimeout(() => {
-                    ipcRenderer.send('close');
-                    ipcRenderer.send('run', id);
+                    ipcRenderer.send('run', id, input);
                 }, 20);
             }
 
@@ -89,7 +95,7 @@ class List {
     search () {
         let input = $("input").val();
         if (input[0] === "=") {
-            $("input").val(input.replace(/\\/, "/"));
+            $("input").val(input.replace(/\\/g, "/"));
             input = $("input").val();
         }
         if (input === "") {
@@ -120,15 +126,19 @@ $(()=>{
         }
 
     }).blur(() => {
-        $("input").val("").fadeOut(0);
+        $("input").val("");
         $("ul").empty().fadeOut(0);
         setTimeout(() => {
             ipcRenderer.send('close');
         }, 20);
     });
 
-    ipcRenderer.on("focued", () => {
-        $("input").fadeIn().focus();
+    ipcRenderer.on("show", () => {
+        $("input").prop("readonly", false).focus();
+        $("input");
+    })
+    ipcRenderer.on("hide", () => {
+        $("input").prop("readonly", true);
     })
 
 })

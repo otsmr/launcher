@@ -5,7 +5,7 @@ module.exports = new class {
 
     constructor () {
 
-        this.iconPath =  process.lauchner.iconPath;
+        this.iconPath =  process.launcher.iconPath;
     }
 
     get json () {

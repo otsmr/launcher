@@ -13,6 +13,7 @@ const autoResize = (dynamicWindow) => {
         if (height !== currentHeight) {
             currentHeight = height
             height += 50;
+            if (height < 113) height = 113;
             dynamicWindow.setSize(defaultSize.width, height);
         }
     }
