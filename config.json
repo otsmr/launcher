@@ -37,6 +37,7 @@
         "search.launcher": {
             "enabled": true,
             "config": {
+                "waitAfterInput": 500,
                 "engines": [
                     {
                         "prefix": "d ",

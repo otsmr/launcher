@@ -13,6 +13,7 @@ class Search extends Module {
         super("search.launcher", a, b, {
             "enabled": true,
             "config": {
+                "waitAfterInput": 500,
                 "engines": [
                     {
                         "prefix": "d ",
@@ -65,6 +66,7 @@ class Search extends Module {
     }
 
     check (query) {
+        if (this.timer) clearTimeout(this.timer);
 
         const config = process.launcher.config().module[this.id].config;
 
@@ -106,18 +108,21 @@ class Search extends Module {
             searches.push(view);
 
             if (engine.suggestqueries) {
-                switch (engine.engine) {
-                    case "google": 
+                this.timer = setTimeout(() => {
+                    
+                    switch (engine.engine) {
+                        case "google": 
                         suggestqueries.google(q, (data) => {
                             this.addSuggest(engine, view, data);
                         })
-                    break;
-                    case "duckduckgo": 
+                        break;
+                        case "duckduckgo": 
                         suggestqueries.duckduckgo(q, (data) => {
                             this.addSuggest(engine, view, data);
                         })
-                    break;
-                }
+                        break;
+                    }
+                }, config.waitAfterInput || 500);
             }
             
         }
@@ -130,6 +135,7 @@ class Search extends Module {
     }
 
     addSuggest (engine, view, querys) {
+
         let list = [];
 
         list.push(view);

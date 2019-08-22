@@ -30,16 +30,18 @@ class Battery extends Module {
     }
 
     calc (query) {
-console.log(typeof query, query);
         try {
-            if (query.match(new RegExp("^[0-9\\+\\-\\/\*]*$", "g")) && query.length > 2) {
+
+            if (query[query.length-1].match(new RegExp("^[0-9]*$", "g")) && query.match(new RegExp("^[0-9\\+\\-\\/\*]*$", "g")) && query.length > 2) {
                 this.send({
                     ...this.item,
                     name: this.item.name + eval(query)
                 })
                 return true;
             }
-        } catch (error) { console.log(error); }
+        } catch (error) { 
+            console.log(error);
+        }
         return false;        
         
     }
