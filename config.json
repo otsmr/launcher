@@ -5,6 +5,12 @@
             "enabled": true,
             "config": { }
         },
+        "weather.wettercom": {
+            "enabled": true,
+            "config": {
+                "prefix": "wetter "
+            }
+        },
         "calc.launcher": {
             "enabled": true,
             "config": { }

@@ -220,7 +220,7 @@ class HandleList {
 
         if (!run) return this.mainWindow.toggleMe(true);
         if (run.onSelect) {
-            return run.onSelect(input);
+            return run.onSelect(input, run);
         }
         if (!run.type) {
 

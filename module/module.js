@@ -31,8 +31,8 @@ module.exports = class {
 
     }
 
-    setInput (data) {
-        this.mainWindow.webContents.send("toinput", data);
+    setInput (data, search = true) {
+        this.mainWindow.webContents.send("toinput", data, search);
     }
 
 }
