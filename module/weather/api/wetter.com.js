@@ -78,7 +78,6 @@ class WetterCom {
                 call(res)
             } catch (error) {
                 console.log(error);
-                call(false);
             }
 
         });

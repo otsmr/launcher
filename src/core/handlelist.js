@@ -83,7 +83,8 @@ class HandleList {
             }
             list.push({
                 icon: process.launcher.imgPath + "box.svg",
-                name: "Modul: " + id + ` (${modules[id].config.prefix})`,
+                name: "Modul: " + id + ((modules[id].config.prefix != "undefined") ? ` (${(modules[id].config.prefix)})` : ""),
+
                 desc: (modules[id].enabled) ? "Aktiviert" : "Deaktiviert",
                 type: "toinput",
                 toinput: "! " + id
@@ -111,7 +112,7 @@ class HandleList {
 
             list.unshift({
                 icon: process.launcher.imgPath + "box.svg",
-                name: "Modul: <b>" + commands[0] + `</b> (${item.config.prefix})`,
+                name: "Modul: <b>" + commands[0] + (item.config.prefix != "undefined") ? `</b> (${(item.config.prefix)})` : "</b>",
                 desc: (item.enabled) ? "Aktiviert" : "Deaktiviert",
             });
         }
@@ -129,38 +130,50 @@ class HandleList {
         }
 
         let list = this.getList();
-        
+
         for (const item of this.registered){
 
-            if (item.always && item.always(query)) return;
             if (item.addToList) {
                 const add = item.addToList();
                 if (typeof add === "object" && add.length > 0) {
                     list = list.concat(add);
                 }
             }
-            
+        }
+
+        if (query[0] === "?") {
+
+            let res = [];
+            for (const item of this.registered) {
+                if (!item.name) continue;
+                if (item.exact) res.push({ ...item, name: item.name + ` (${item.exact})`, type: "toinput", toinput: item.exact });
+                if (item.prefix) res.push({ ...item, name: item.name + ` (${item.prefix})`, type: "toinput", toinput: item.prefix });
+            }
+            for (const item of list) {
+                if (!item.name) continue;
+                if (item.exact) res.push({ ...item, name: item.name + ` (${item.exact})`, type: "toinput", toinput: item.exact });
+                if (item.prefix) res.push({ ...item, name: item.name + ` (${item.prefix})`, type: "toinput", toinput: item.prefix });
+            }
+            if (query.length > 1) {
+                res = search.list(query.replace("?", ""), res);
+            }
+            return this.send(res);
+
+        
+
+        }
+
+        
+        
+        for (const item of this.registered){
+
+            if (item.always && item.always(query)) return;
+
             if (!item.prefix || !query.startsWith(item.prefix)) continue;
             let q = query.replace(item.prefix, "");
             if (q[0] === " ") q = q.substr(1);
 
             return item.onInput(q);
-
-        }
-
-        if (query[0] === ">") {
-
-            let res = [];
-            for (const item of list) {
-                if ((item.exact || item.prefix) && item.name) res.push(item);
-            }
-            for (const item of this.registered) {
-                if ((item.exact || item.prefix) && item.name) res.push(item);
-            }
-            if (query.length > 1) {
-                res = search.list(query.replace(">", ""), res);
-            }
-            return this.send(res);
 
         }
 
