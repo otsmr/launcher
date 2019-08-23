@@ -34,7 +34,7 @@ class Battery extends Module {
     calc (query) {
         try {
 
-            if (query[query.length-1].match(new RegExp("^[0-9]*$", "g")) && query.match(new RegExp("^[0-9\\+\\-\\/\*]*$", "g")) && query.length > 2) {
+            if (parseInt(query) != query && query[query.length-1].match(new RegExp("^[0-9]*$", "g")) && query.match(new RegExp("^[0-9\\+\\-\\/\*]*$", "g")) && query.length > 2) {
                 this.send({
                     ...this.item,
                     name: this.item.name + eval(query)

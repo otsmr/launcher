@@ -65,6 +65,7 @@ class HandleList {
                 m = m.split(".")[0];
                 const installer = require(process.launcher.modulePath + m + "/" + m);
                 installer(this, this.mainWindow, search);
+                // console.log(m + " installiert/neugeladen.");
             }
         }
         for (let item of modulesFiles){
@@ -74,7 +75,7 @@ class HandleList {
             if (fs.existsSync(installFile)) {
                 const installer = require(installFile);
                 installer(this, this.mainWindow, search);
-                console.log(item + " wurde installiert.");
+                // console.log(item + " neu installiert.");
             }
         }
 
@@ -85,6 +86,13 @@ class HandleList {
     }
 
     displayModules (query) {
+        
+        if (query === "-reload") {
+            this.registered = [];
+            this.importModule();
+            this.setInput("! ")
+            return;
+        }
 
         const commands = query.split(" ");
         let list = [];
@@ -110,7 +118,7 @@ class HandleList {
         
         list.unshift({
             name: "Module",
-            desc: "Optionen: $id -disable, -enable",
+            desc: "Optionen: $id -disable, -enable; -reload",
             icon: process.launcher.imgPath + "box.svg"
         });
         if (item){
