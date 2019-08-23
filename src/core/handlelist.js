@@ -6,7 +6,7 @@ const fs = require("fs");
 const search = require("./search");
 const { shell } = require("electron");
 const { exec, spawn } = require('child_process');
-
+const path = require("path");
 const clipboardy = require("clipboardy");
 
 class HandleList {
@@ -43,6 +43,7 @@ class HandleList {
     importModule () {
 
         const modules = process.launcher.config().module;
+        const modulesFiles = fs.readdirSync(process.launcher.modulePath);
 
         const installed = {};
         for (const m of this.registered) {
@@ -53,14 +54,27 @@ class HandleList {
                 }
             } catch (error) { }
 
+            // Deaktiviert
             this.registered.splice(this.registered.indexOf(m), 1);
         }
+        let inits = {};
         for (let m in modules) {
+            inits[m.split(".")[0]] = true;
             if (modules[m].enabled) {
                 if (installed[m]) continue;
                 m = m.split(".")[0];
                 const installer = require(process.launcher.modulePath + m + "/" + m);
                 installer(this, this.mainWindow, search);
+            }
+        }
+        for (let item of modulesFiles){
+            if (item === "module.js") continue;
+            if (inits[item]) continue;
+            const installFile = path.join(process.launcher.modulePath, item, item + ".js");
+            if (fs.existsSync(installFile)) {
+                const installer = require(installFile);
+                installer(this, this.mainWindow, search);
+                console.log(item + " wurde installiert.");
             }
         }
 
