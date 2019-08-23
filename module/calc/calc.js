@@ -11,7 +11,7 @@ class Battery extends Module {
         })
 
         this.item = {
-            name: "Ergebniss: ",
+            name: "Ergebnis: ",
             desc: "",
             icontyp: "file",
             icon: process.launcher.imgPath + "/calc.svg",
