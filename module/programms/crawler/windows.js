@@ -123,7 +123,7 @@ class Crawler {
                 }
             }
             if (iconWhite) icon = iconWhite;
-            if (!icon) icon = images[0];
+            if (!icon) icon = "";
 
             let zune = false;
             let name = xml.match(new RegExp("<DisplayName>(.*?)</DisplayName>"))[1];
@@ -132,7 +132,7 @@ class Crawler {
                 if (app.Name.indexOf("Zune") > -1) zune = true;
                 name = app.Name.split(".").slice(1).join(" ").replace("Zune", "")
             }
-
+            
             return {
                 name, zune,
                 icon: path.join(app.InstallLocation, path.dirname(logoName), icon)
@@ -194,7 +194,7 @@ module.exports = (home, force = false) => {
 
     try {
         const listFile = fs.statSync(home + "list.json");
-        const birth = new Date(listFile.birthtime).getTime();
+        const birth = new Date(listFile.mtime).getTime();
         const d = new Date();
         d.setDate(d.getDate() - 1);
         const last24 = d.getTime();
@@ -205,6 +205,7 @@ module.exports = (home, force = false) => {
     
     if (force) {
         const newList = new Crawler(home).json;
+        fs.unlinkSync(home + "list.json");
         fs.writeFileSync(home + "list.json", JSON.stringify(newList));
         return newList;
     }
