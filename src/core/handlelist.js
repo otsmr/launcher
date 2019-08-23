@@ -98,7 +98,7 @@ class HandleList {
             }
             list.push({
                 icon: process.launcher.imgPath + "box.svg",
-                name: "Modul: " + id + ((modules[id].config.prefix != "undefined") ? ` (${(modules[id].config.prefix)})` : ""),
+                name: "Modul: " + id + ((modules[id].config.prefix != undefined) ? ` (${(modules[id].config.prefix)})` : ""),
 
                 desc: (modules[id].enabled) ? "Aktiviert" : "Deaktiviert",
                 type: "toinput",
@@ -127,7 +127,7 @@ class HandleList {
 
             list.unshift({
                 icon: process.launcher.imgPath + "box.svg",
-                name: "Modul: <b>" + commands[0] + (item.config.prefix != "undefined") ? `</b> (${(item.config.prefix)})` : "</b>",
+                name: "Modul: <b>" + commands[0] + ((item.config.prefix != undefined) ? `</b> (${(item.config.prefix)})` : "</b>"),
                 desc: (item.enabled) ? "Aktiviert" : "Deaktiviert",
             });
         }
