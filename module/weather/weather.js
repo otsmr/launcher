@@ -29,20 +29,20 @@ class Weather extends Module {
             id: this.id,
             prefix: this.prefix,
             noEnter: false,
-            onInput: (name) => {
-                return this.display(name);
+            onInput: (name, sendID) => {
+                return this.display(name, sendID);
             },
-            onSelect: (query, item) => {
-                this.search(query, item)
+            onSelect: (query, item, sendID) => {
+                this.search(query, item, sendID)
             }
         })
 
     }
 
-    display(name) {
+    display (name, sendID) {
 
         if (name === "") {
-            this.send(this.item);
+            this.send(this.item, sendID);
             return true;
         }
 
@@ -58,13 +58,13 @@ class Weather extends Module {
                 });
                 id++;
             }
-            this.send(send);
+            this.send(send, sendID);
         });
         
         return true;
     }
 
-    search(query, item) {
+    search(query, item, sendID) {
         this.send({
             ...this.item,
             name: "Wetter wird geladen"
@@ -86,12 +86,12 @@ class Weather extends Module {
                     name: `${c.date}<br>
                            <b>${c.smallDesc}</b>, bei Temp. von <b>${c.tempMin}</b> bis <b>${c.tempMax}</b><br>
                            Zu <b>${c.rainfall}</b> Regen, <b>${c.sunHours}</b> Sonne`,
-                    desc: `<div style="white-space: normal; text-align: left;">${c.longDesc.replace(", ", "<br>")}</div>`,
+                    desc: `${c.longDesc.replace(", ", "<br>")}`,
                     icon: c.icon,
                 })
             }
 
-            this.send(list);
+            this.send(list, sendID);
 
         });
 

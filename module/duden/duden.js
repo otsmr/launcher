@@ -29,25 +29,25 @@ class Duden extends Module {
             id: this.id,
             prefix: this.prefix,
             noEnter: true,
-            onInput: (q) => {
-                return this.display(q);
+            onInput: (q, sendID) => {
+                return this.display(q, sendID);
             }, 
-            onSelect: (q, item) => {
-                this.showResult(q, item);
+            onSelect: (q, item, sendID) => {
+                this.showResult(sendID, q, item);
             }
         })
 
     }
 
-    display (query) {
+    display (query, sendID) {
 
         if (query.length < 2) {
-            this.send(this.item);
+            this.send(this.item, sendID);
             return true;
         }
 
         duden.search(query, (json) => {
-
+            
             let list = [];
             let id = 0;
             for (const item of json) {
@@ -60,7 +60,7 @@ class Duden extends Module {
                 id++;
             }
 
-            this.send(list);
+            this.send(list, sendID);
 
         });
 
@@ -68,11 +68,11 @@ class Duden extends Module {
         
     }
 
-    showResult (q, item) {
+    showResult (sendID, q, item) {
         this.send({
             ...this.item,
-            name: "Wort wird geladen"
-        })
+            name: "<b>" + item.name + "</b> wird geladen"
+        }, sendID)
         this.setInput(this.prefix + q, false);
 
         duden.getWord(item.url, (data) => {
@@ -88,11 +88,11 @@ class Duden extends Module {
                 if (title === "Artikel") continue;
                 list.push({
                     ...this.item,
-                    name: `<div style="white-space: normal; text-align: left;">${title}<br><b>${data[title]}</b></div>`,
+                    name: `${title}<br><b>${data[title]}</b>`,
                     desc: ""
                 });
             }
-            this.send(list);
+            this.send(list, sendID);
             
         })
 

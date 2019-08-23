@@ -16,6 +16,7 @@ class HandleList {
         this.registered = [];
         this.mainWindow = mainWindow;
         this.json = [];
+        this._lastSendID = 0;
 
         mainWindow.on("focus", () =>{
             this.importModule();
@@ -122,7 +123,7 @@ class HandleList {
     }
 
     search (query) {
-
+        this._lastSendID++;
         if (query.startsWith("!")) {
             query = query.replace("!", "");
             if (query[0] === " ") query = query.substr(1);
@@ -159,21 +160,16 @@ class HandleList {
             }
             return this.send(res);
 
-        
-
         }
 
-        
-        
         for (const item of this.registered){
 
-            if (item.always && item.always(query)) return;
+            if (item.always && item.always(query, this._lastSendID)) return;
 
             if (!item.prefix || !query.startsWith(item.prefix)) continue;
             let q = query.replace(item.prefix, "");
             if (q[0] === " ") q = q.substr(1);
-
-            return item.onInput(q);
+            return item.onInput(q, this._lastSendID);
 
         }
 
@@ -220,7 +216,7 @@ class HandleList {
     }
 
     run (id, input) {
-        
+        this._lastSendID++;
         if (!this.json) return this.mainWindow.toggleMe(true);
 
         let run = false;
@@ -233,7 +229,7 @@ class HandleList {
 
         if (!run) return this.mainWindow.toggleMe(true);
         if (run.onSelect) {
-            return run.onSelect(input, run);
+            return run.onSelect(input, run, this._lastSendID);
         }
         if (!run.type) {
 
@@ -243,7 +239,7 @@ class HandleList {
                 if (item.onSelect) {
                     let i = input.replace(item.prefix, "");
                     if (i[0] === " ") i = i.substr(1);
-                    return item.onSelect(i, run);
+                    return item.onSelect(i, run, this._lastSendID);
                 }
     
             }

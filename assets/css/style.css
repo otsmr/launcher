@@ -80,10 +80,11 @@ ul li .img img {
 
 ul li .text > * {
     margin: 0;
-    white-space: nowrap;
     overflow: hidden;
     width: 100%;
     text-overflow: ellipsis;
+    white-space: normal;
+    text-align: left;
 }
 ul li .text h1 {
     color: #000;

@@ -29,8 +29,8 @@ class Battery extends Module {
             id: this.id,
             prefix: this.prefix,
             noEnter: true,
-            onInput: (search) => {
-                return this.display(search);
+            onInput: (search, sendID) => {
+                return this.display(search, sendID);
             }
         })
 
@@ -53,13 +53,13 @@ class Battery extends Module {
         return false;
     }
 
-    display () {
+    display (query,  sendID) {
 
         this.send([this.item])
 
         const infos = this.getBatteryInfo();
 
-        if (!infos) return this.send([this.item]);
+        if (!infos) return this.send([this.item],  sendIDs);
         const def = {
             ...this.item,
             desc: ""
@@ -77,7 +77,7 @@ class Battery extends Module {
             name: "Ladezustand: <b>" + infos.EstimatedChargeRemaining + "%</b>"
         },{ ...def,
             name: "Verbleibende Zeit: <b>" + remainingTime + "</b>"
-        }]);
+        }],  sendID);
         
     }
 

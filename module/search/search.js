@@ -77,8 +77,8 @@ class Search extends Module {
         this.handlelist.register({
             ...this.item,
             id: this.id,
-            always: (query) => {
-                return this.check(query);
+            always: (query, sendID) => {
+                return this.check(query, sendID);
             },
             addToList: (query) => {
                 return [{
@@ -92,13 +92,12 @@ class Search extends Module {
 
     }
 
-    check (query) {
+    check (query, sendID) {
 
         if (query === "-engine") {
             let list = [];
 
             const config = process.launcher.config().module[this.id].config;
-
                 
             for (const engine of config.engines) {
                 list.push({
@@ -111,9 +110,10 @@ class Search extends Module {
                     toinput: engine.prefix
                 });
             }
-            this.send(list);
+            this.send(list, sendID);
 
             return true;
+
         }
 
         if (this.timer) clearTimeout(this.timer);
@@ -143,7 +143,7 @@ class Search extends Module {
                     icon: engine.icon.replace("$imgPath", process.launcher.imgPath),
                     name: "Optionen für " + engine.engine,
                     desc: "Autocomplete: -off, -on"
-                });
+                }, sendID);
                 return true;
             }
 
@@ -158,31 +158,13 @@ class Search extends Module {
             }
             searches.push(view);
 
-            if (engine.suggestqueries) {
+            if (engine.suggestqueries && suggestqueries[engine.engine]) {
                 this.timer = setTimeout(() => {
                     
-                    switch (engine.engine) {
-                        case "google": 
-                            suggestqueries.google(q, (data) => {
-                                this.addSuggest(engine, view, data);
-                            })
-                        break;
-                        case "duckduckgo": 
-                            suggestqueries.duckduckgo(q, (data) => {
-                                this.addSuggest(engine, view, data);
-                            })
-                        break;
-                        case "wikipedia": 
-                            suggestqueries.wikipedia(q, (data) => {
-                                this.addSuggest(engine, view, data);
-                            })
-                        break;
-                        case "startpage": 
-                            suggestqueries.startpage(q, (data) => {
-                                this.addSuggest(engine, view, data);
-                            })
-                        break;
-                    }
+                    suggestqueries[engine.engine](q, (data) => {
+                        this.addSuggest(engine, view, data, sendID);
+                    })
+                    
                 }, config.waitAfterInput || 500);
             }
             
@@ -195,7 +177,7 @@ class Search extends Module {
 
     }
 
-    addSuggest (engine, view, querys) {
+    addSuggest (engine, view, querys, sendID) {
 
         let list = [];
 
@@ -213,7 +195,7 @@ class Search extends Module {
             id++;
         }
 
-        this.send(list);
+        this.send(list, sendID);
     }
 
 }

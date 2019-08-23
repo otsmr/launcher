@@ -77,7 +77,13 @@ class WetterCom {
                 }
                 call(res)
             } catch (error) {
-                console.log(error);
+                call({
+                    name: "Wetter konnte nicht geladen werden",
+                    desc: "",
+                    icon: process.launcher.imgPath + "weather.svg",
+                    icontyp: "file",
+                    type: ""
+                })
             }
 
         });

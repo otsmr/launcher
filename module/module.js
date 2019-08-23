@@ -7,6 +7,8 @@ module.exports = class {
         this.id = id;
         this.handlelist = handlelist;
         this.mainWindow = mainWindow;
+        this._sendCount = 0; // BugFix, wenn zu das Internet zu langsam ist 
+        this._inputCount = 0;
 
         try {
             this.config = process.launcher.config().module[this.id].config;
@@ -20,8 +22,15 @@ module.exports = class {
 
     }
 
-    send (list = []) {
-        
+    send (list = [], sendID = -1) {
+        if (sendID > -1) {
+            if (sendID !== this.handlelist._lastSendID) {
+                return console.log("returned because", sendID, this.handlelist._lastSendID);
+            } else {
+                console.log(sendID, "ok")
+            }
+        }
+
         if (list.length === undefined) {
             list = [list];
         }
