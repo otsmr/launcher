@@ -157,7 +157,7 @@ class HandleList {
         }
 
         if (query[0] === "?") {
-
+            
             let res = [];
             for (const item of this.registered) {
                 if (!item.name) continue;
@@ -170,7 +170,7 @@ class HandleList {
                 if (item.prefix) res.push({ ...item, name: item.name + ` (${item.prefix})`, type: "toinput", toinput: item.prefix });
             }
             if (query.length > 1) {
-                res = search.list(query.replace("?", ""), res);
+                res = search.list(query.replace("?", "").trimStart(), res);
             }
             return this.send(res);
 
