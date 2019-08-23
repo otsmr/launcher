@@ -64,6 +64,15 @@
                 "waitAfterInput": 500,
                 "engines": [
                     {
+                        "prefix": "s ",
+                        "name": "Startpage: <b>$query</b>",
+                        "desc": "Auf Startpage nach $query suchen",
+                        "icon": "$imgPath/startpage.png",
+                        "engine": "startpage",
+                        "suggestqueries": true,
+                        "url": "https://www.startpage.com/sp/search?q=$query&language=deutsch"
+                    },
+                    {
                         "prefix": "d ",
                         "name": "DuckDuckGo Black: <b>$query</b>",
                         "desc": "Auf DuckDuckGo nach $query suchen",

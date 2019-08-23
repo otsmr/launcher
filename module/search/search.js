@@ -5,7 +5,8 @@ const Module = require("../module");
 const suggestqueries = {
     google: require("./suggestqueries/google"),
     duckduckgo: require("./suggestqueries/duckduckgo"),
-    wikipedia: require("./suggestqueries/wikipedia")
+    wikipedia: require("./suggestqueries/wikipedia"),
+    startpage: require("./suggestqueries/startpage")
 }
 
 class Search extends Module {
@@ -16,6 +17,15 @@ class Search extends Module {
             "config": {
                 "waitAfterInput": 500,
                 "engines": [
+                    {
+                        "prefix": "s ",
+                        "name": "Startpage: <b>$query</b>",
+                        "desc": "Auf Startpage nach $query suchen",
+                        "icon": "$imgPath/startpage.png",
+                        "engine": "startpage",
+                        "suggestqueries": true,
+                        "url": "https://www.startpage.com/sp/search?q=$query&language=deutsch"
+                    },
                     {
                         "prefix": "d ",
                         "name": "DuckDuckGo Black: <b>$query</b>",
@@ -69,12 +79,43 @@ class Search extends Module {
             id: this.id,
             always: (query) => {
                 return this.check(query);
+            },
+            addToList: (query) => {
+                return [{
+                    ...this.item,
+                    desc: "",
+                    name: "Alle aktiven Suchmaschinen",
+                    exact: "-engine"
+                }]
             }
         })
 
     }
 
     check (query) {
+
+        if (query === "-engine") {
+            let list = [];
+
+            const config = process.launcher.config().module[this.id].config;
+
+                
+            for (const engine of config.engines) {
+                list.push({
+                    ...this.item,
+                    ...engine,
+                    type: "toinput",
+                    icon: engine.icon.replace("$imgPath", process.launcher.imgPath),
+                    name: engine.name.replace("$query", engine.prefix),
+                    desc: "Autocomplete: " + ((engine.suggestqueries) ? "Aktiviert" : "Deaktiviert"),
+                    toinput: engine.prefix
+                });
+            }
+            this.send(list);
+
+            return true;
+        }
+
         if (this.timer) clearTimeout(this.timer);
 
         const config = process.launcher.config().module[this.id].config;
@@ -133,6 +174,11 @@ class Search extends Module {
                         break;
                         case "wikipedia": 
                             suggestqueries.wikipedia(q, (data) => {
+                                this.addSuggest(engine, view, data);
+                            })
+                        break;
+                        case "startpage": 
+                            suggestqueries.startpage(q, (data) => {
                                 this.addSuggest(engine, view, data);
                             })
                         break;

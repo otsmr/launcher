@@ -4,7 +4,7 @@ const iconv = require('iconv-lite');
 
 module.exports = (string, call) => {
 
-    const searchURL = "https://de.wikipedia.org/w/api.php?action=opensearch&limit=9&suggest=true&search=" + encodeURIComponent(string);
+    const searchURL = "https://www.startpage.com/do/suggest?limit=10&lang=deutsch&format=json&query=" + encodeURIComponent(string);
     request({ encoding: null, method: "GET", uri: searchURL }, (err, res, body) => {
         
         if (err || res.statusCode !== 200) call([]);
