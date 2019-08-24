@@ -33,7 +33,7 @@ module.exports = new class {
             let data = fs.readFileSync(file).toString();
             fs.unlinkSync(file);
             data = data.substr(1); // Bug Fix: '﻿' Encoding
-            
+            if (data === "") return [];
             const match = data.match(/:(.*?)"(.*?)"(.*?)"(.*?)"(.*?),/g);
 
             if (match) for (const item of match) {
