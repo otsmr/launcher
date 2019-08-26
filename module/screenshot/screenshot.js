@@ -1,5 +1,5 @@
 "use strict";
-const screenshot = require('desktop-screenshot');
+const powershell = require("../packages/powershell");
 const path = require("path");
 const Module = require("../module")
 
@@ -55,16 +55,19 @@ class Battery extends Module{
     }
 
     make (name) {
+
         name = name.replace(this.prefix, "")
         if (name[0] === " ") name = name.substr(1)
         if (name === "") name = "screenshot.png";
         else if (!name.endsWith(".png")) name += ".png";
         const file = path.join(process.launcher.desktopPath, name);
         this.mainWindow.toggleMe(true);
-        screenshot(file, (error, complete) => {
-            this.mainWindow.toggleMe(false);
-            if (!error) this.mainWindow.webContents.send("toinput", "=" + file)
-        });
+
+        powershell.screenshot(file);
+
+        this.mainWindow.toggleMe(false);
+        this.setInput("=" + file);
+        
         
     }
 
