@@ -2,6 +2,7 @@
 const spawnSync = require('child_process').spawnSync;
 const fs = require("fs");
 const path = require("path");
+const geticonps1 = require("./ps/get-icon");
 
 module.exports = new class {
 
@@ -54,10 +55,10 @@ module.exports = new class {
     geticon (ext, saveto) {
 
         try {
-            const geticonps1 = path.join(__dirname, "ps" , "get-icon.ps1");
+            // const geticonps1 = path.join(__dirname, "ps" , "get-icon.ps1");
             const dumpfile = path.join(__dirname, "tmp." + ext);
             fs.writeFileSync(dumpfile, "");
-            const befehl = `\.'${geticonps1}'; (Get-Icon -Path '${dumpfile}' -ToBitmap).Save('${saveto}.png', [System.Drawing.Imaging.ImageFormat]::Png) `
+            const befehl = `${geticonps1}; (Get-Icon -Path '${dumpfile}' -ToBitmap).Save('${saveto}.png', [System.Drawing.Imaging.ImageFormat]::Png) `
             this.run(befehl);
             fs.unlinkSync(dumpfile);
             return true;

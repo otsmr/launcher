@@ -30,7 +30,7 @@
 		"clipboardy": "^2.1.0",
 		"desktop-screenshot": "^0.1.1",
 		"electron-window-position": "^1.0.1",
-		"filesearch-windows": "1.0.3",
+		"filesearch-windows": "1.0.4",
 		"iconv-lite": "^0.5.0",
 		"moment": "^2.24.0",
 		"node-google-translate-skidz": "^1.1.2",
