@@ -75,7 +75,6 @@ class Search extends Module {
 
         this.item = {
             name: "Suchmaschinen",
-            icontype: "file",
             icon: process.launcher.imgPath + "duck.svg"
         }
         
@@ -161,7 +160,6 @@ class Search extends Module {
                 name: engine.name.replace("$query", q),
                 desc: engine.desc.replace("$query", q),
                 type: "website",
-                icontype: "file",
                 id: searches.length,
                 icon: engine.icon.replace("$imgPath", process.launcher.imgPath),
                 url: engine.url.replace("$query", q)

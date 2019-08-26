@@ -28,7 +28,6 @@ class FileSearch extends Module {
         this.item = {
             name: "Filesearch",
             desc: "",
-            icontyp: "file",
             icon: process.launcher.imgPath + "windows/explorer.png",
         }
 

@@ -16,7 +16,6 @@ class Duden extends Module {
         this.item = {
             name: "Duden",
             desc: "Duden.de durchsuchen",
-            icontyp: "file",
             icon: process.launcher.imgPath + "engine/duden.png",
         }
 

@@ -7,7 +7,6 @@
         "name": String (Optional, wenn desc gegeben),
         "desc": String (Optional, wenn name gegeben),
         "icon": String [path],
-        "icontyp": String [file],
         "type": String ["copy", "website", "application", "command", "shortcut", "toinput"],
         "exact": String (Optional),
         "prefix": String (Optional),

@@ -16,8 +16,7 @@ class Battery extends Module{
         this.item = {
             name: "Screenshot",
             desc: "Erstellt ein Screenshot (Speicherort: Desktop)",
-            icon: process.launcher.imgPath + "/screenshot.png",
-            icontyp: "file"
+            icon: process.launcher.imgPath + "/screenshot.png"
         }
         
     }

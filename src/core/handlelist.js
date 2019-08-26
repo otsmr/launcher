@@ -32,7 +32,6 @@ class HandleList {
             "name": "Einstellungen",
             "desc": "Einstellungen für den Launcher",
             "icon": process.launcher.imgPath + "/logo.png",
-            "icontyp": "file",
             "type": "application",
             "path": process.launcher.appData + "/config.json",
             "exact": "config"

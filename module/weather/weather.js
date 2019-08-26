@@ -16,8 +16,7 @@ class Weather extends Module {
         this.item = {
             name: "Wetter by wetter.com",
             desc: "",
-            icon: process.launcher.imgPath + "/weather.svg",
-            icontyp: "file"
+            icon: process.launcher.imgPath + "/weather.svg"
         }
 
     }

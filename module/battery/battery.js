@@ -16,7 +16,6 @@ class Battery extends Module {
         this.item = {
             name: "Akku",
             desc: "Informationen zum Akku",
-            icontyp: "file",
             icon: process.launcher.imgPath + "windows/akku.png",
         }
 

@@ -81,7 +81,6 @@ class WetterCom {
                     name: "Wetter konnte nicht geladen werden",
                     desc: "",
                     icon: process.launcher.imgPath + "weather.svg",
-                    icontyp: "file",
                     type: ""
                 })
             }

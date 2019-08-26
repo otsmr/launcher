@@ -15,7 +15,6 @@ class Speedtest extends Module {
         this.item = {
             name: "Speedtest",
             desc: "Internetgeschwindigkeit für Upload und Download",
-            icontyp: "file",
             icon: process.launcher.imgPath + "windows/akku.png",
         }
 

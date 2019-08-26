@@ -18,8 +18,7 @@ class Crawler {
         for (const programm of list) {
             res.push({
                 ...programm,
-                desc: programm.name + " öffnen",
-                icontyp: "file"
+                desc: programm.name + " öffnen"
             });
         }
 

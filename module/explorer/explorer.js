@@ -27,7 +27,6 @@ class Explorer extends Module {
             desc: "Launcher Explorer öffnen mit \"=\"",
             type: "toinput",
             icon: process.launcher.imgPath + "windows/explorer.png",
-            icontyp: "file",
             toinput: `=`,
 
         }
@@ -82,7 +81,6 @@ class Explorer extends Module {
                     name: file.name,
                     desc: "Ordner öffnen",
                     icon: process.launcher.imgPath + "explorer/folder.png",
-                    icontype: "file",
                     type: "toinput",
                     toinput: "=" + addFolder +  file.name + "/",
                     id
@@ -91,7 +89,6 @@ class Explorer extends Module {
                 files.push({
                     name: file.name,
                     desc: "Datei öffnen",
-                    icontype: "file",
                     type: "application",
                     path: path.join(folder, file.name),
                     icon: fileicon(path.extname(file.name)),
@@ -111,7 +108,6 @@ class Explorer extends Module {
         if (this.config.show.copypath)  array.push({
             name: "Pfad kopieren",
             icon: process.launcher.imgPath + "copy.svg",
-            icontype: "file",
             desc: copy,
             type: "copy",
             copy: copy,
@@ -124,7 +120,6 @@ class Explorer extends Module {
                     array.unshift({
                         name: "Im Explorer öffnen",
                         icon: process.launcher.imgPath + "windows/explorer.png",
-                        icontype: "file",
                         desc: dir,
                         type: "command",
                         command: "start explorer \"" + dir + "\"",
