@@ -22,7 +22,7 @@ class Translate extends Module {
         this.item = {
             name: "Übersetzen",
             desc: "Übersetzen mit Google Translate. Optionen öffnen \"-\"",
-            icon: process.launcher.imgPath + "/gtranslate.png",
+            icon: process.launcher.imgPath + "/engine/gtranslate.png",
             icontyp: "file"
         }
 
@@ -164,7 +164,7 @@ class Translate extends Module {
                 } catch (error) {
                     list.push({
                         name: "Fehler bei der Übersetzung",
-                        icon: process.launcher.imgPath + "/gtranslate.png",
+                        icon: process.launcher.imgPath + "/engine/gtranslate.png",
                         icontyp: "file"
                     });
                 }

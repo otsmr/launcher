@@ -17,7 +17,7 @@ class Duden extends Module {
             name: "Duden",
             desc: "Duden.de durchsuchen",
             icontyp: "file",
-            icon: process.launcher.imgPath + "duden.png",
+            icon: process.launcher.imgPath + "engine/duden.png",
         }
 
     }
