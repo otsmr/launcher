@@ -26,8 +26,6 @@ module.exports = class {
         if (sendID > -1) {
             if (sendID !== this.handlelist._lastSendID) {
                 return console.log("returned because", sendID, this.handlelist._lastSendID);
-            } else {
-                console.log(sendID, "ok")
             }
         }
 

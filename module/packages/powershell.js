@@ -51,4 +51,20 @@ module.exports = new class {
 
     }
 
+    geticon (ext, saveto) {
+
+        try {
+            const geticonps1 = path.join(__dirname, "ps" , "get-icon.ps1");
+            const dumpfile = path.join(__dirname, "tmp." + ext);
+            fs.writeFileSync(dumpfile, "");
+            const befehl = `\.'${geticonps1}'; (Get-Icon -Path '${dumpfile}' -ToBitmap).Save('${saveto}.png', [System.Drawing.Imaging.ImageFormat]::Png) `
+            this.run(befehl);
+            fs.unlinkSync(dumpfile);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    
+    }
+
 }

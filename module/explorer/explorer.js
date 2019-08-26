@@ -4,6 +4,9 @@ const fs = require("fs");
 const Module = require("../module");
 const path = require("path");
 
+const fileicon = require("../packages/fileicons");
+
+
 class Explorer extends Module {
 
     constructor (a, b, search) {
@@ -18,13 +21,6 @@ class Explorer extends Module {
             }
         });
         this.search = search;
-
-        this.iconImages = {};
-        this.imgPath = process.launcher.imgPath + "/explorer/";
-        fs.readdir(this.imgPath, (err, files) => {
-            if (err) return;
-            for (const file of files) this.iconImages[file] = this.imgPath + file
-        });
 
         this.item = {
             name: "Launcher Explorer",
@@ -46,7 +42,6 @@ class Explorer extends Module {
             prefix: this.prefix,
             noEnter: true,
             onInput: (input) => {
-                console.log("input", input);
                 this.build(input);
             }
         })
@@ -86,23 +81,21 @@ class Explorer extends Module {
                 folders.push({
                     name: file.name,
                     desc: "Ordner öffnen",
-                    icon: this.imgPath + "folder.png",
+                    icon: process.launcher.imgPath + "explorer/folder.png",
                     icontype: "file",
                     type: "toinput",
                     toinput: "=" + addFolder +  file.name + "/",
                     id
                 })
             } else if(file.isFile()){
-                const ext = path.extname(file.name);
-                let icon = this.iconImages[ext + ".png"];
-                if (!icon) icon = this.imgPath + "file.png";
                 files.push({
                     name: file.name,
                     desc: "Datei öffnen",
                     icontype: "file",
                     type: "application",
                     path: path.join(folder, file.name),
-                    icon, id
+                    icon: fileicon(path.extname(file.name)),
+                    id
                 })
             }
             
