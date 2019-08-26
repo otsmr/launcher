@@ -9,6 +9,7 @@ require("./core/globalconfig");
 
 if (app.requestSingleInstanceLock()) {
 
+    let mainWindow;
     const exe = app.getPath("exe");
     if (!exe.endsWith("electron.exe")) {
         const autolaunch = new AutoLaunch({
@@ -18,11 +19,9 @@ if (app.requestSingleInstanceLock()) {
         autolaunch.enable();
     }
 
-
     app.on('second-instance', (event, commandLine) => {
-        if (!window) return;
-        if (window.isMinimized()) window.restore();
-        window.focus();
+        if (!mainWindow) return;
+        mainWindow.toogle(false);
     });
 
     app.on('will-quit', () => {
@@ -32,12 +31,17 @@ if (app.requestSingleInstanceLock()) {
     app.on('ready', () => {
 
         // Get position for centered window
-        var position = new WindowPosition();
-        var pos = position.getActiveScreenCenter(600,300);
+        let pos = {
+            center: true
+        }
+        try {
+            pos = new WindowPosition().getActiveScreenCenter(600,300);
+        } catch (error) {
+            console.log(error);
+        }
         
-        const mainWindow = windowHelper('main', {
-            x: pos.x,
-            y: 30,
+        mainWindow = windowHelper('main', {
+            ...pos,
             width: 600,
             height: 400,
             maxHeight: 400,
