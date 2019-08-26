@@ -9,6 +9,15 @@
         "exact": "down"
     },
     {
+        "name": "Musik öffnen",
+        "desc": "Standart Musik öffnen",
+        "icon": "$imgPath/music.svg",
+        "icontyp": "file",
+        "type": "command",
+        "command": "cmd /c start mswindowsmusic:",
+        "exact": "music"
+    },
+    {
         "name": "Neu starten",
         "desc": "Computer neu starten",
         "icon": "$imgPath/reboot.svg",
