@@ -205,7 +205,9 @@ module.exports = (home, force = false) => {
     
     if (force) {
         const newList = new Crawler(home).json;
-        fs.unlinkSync(home + "list.json");
+        try {
+            fs.unlinkSync(home + "list.json");
+        } catch (error) { }
         fs.writeFileSync(home + "list.json", JSON.stringify(newList));
         return newList;
     }

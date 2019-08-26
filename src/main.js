@@ -42,7 +42,6 @@ if (app.requestSingleInstanceLock()) {
             height: 400,
             maxHeight: 400,
             show: true,
-            // show: false,
             frame: false,
             resizable: true,
             transparent: true,
@@ -91,6 +90,7 @@ if (app.requestSingleInstanceLock()) {
         const ret = globalShortcut.register(hotkey, () => {
             mainWindow.toggleMe();
         });
+        mainWindow.toggleMe(true);
 
         if (!ret) console.log("Shortcut:", 'registration failed');
 
