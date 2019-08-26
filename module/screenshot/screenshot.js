@@ -16,7 +16,7 @@ class Battery extends Module{
         this.item = {
             name: "Screenshot",
             desc: "Erstellt ein Screenshot (Speicherort: Desktop)",
-            icon: process.launcher.imgPath + "/screenshot.png"
+            icon: "fa-camera-retro fas"
         }
         
     }

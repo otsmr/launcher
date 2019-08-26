@@ -21,10 +21,14 @@ class List {
             let html = "";
             for (const item of json){
 
+                if (item.icon.startsWith("fa-")) {
+                    item.icon = `<div class="icon"> <i class="${item.icon}"></i> </div>`
+                } else {
+                    item.icon = `<div class="img"> <img src="${item.icon}"> </div>`
+                }
+
                 html += `<li toinput="${(item.toinput) ? item.toinput : ""}" list-id="${item.id}" class="${(item.isExact) ? "exact": ""}">
-                    <div class="img">
-                        <img src="${item.icon}">
-                    </div>
+                    ${item.icon}
                     <div class="text">
                         <h1>${item.name}</h1>
                         <p>${item.desc}</p>

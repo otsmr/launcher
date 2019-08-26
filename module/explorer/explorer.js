@@ -107,7 +107,7 @@ class Explorer extends Module {
         let copy = path.join(folder, query);
         if (this.config.show.copypath)  array.push({
             name: "Pfad kopieren",
-            icon: process.launcher.imgPath + "copy.svg",
+            icon: "fa-copy far",
             desc: copy,
             type: "copy",
             copy: copy,

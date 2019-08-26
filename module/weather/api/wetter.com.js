@@ -80,7 +80,7 @@ class WetterCom {
                 call({
                     name: "Wetter konnte nicht geladen werden",
                     desc: "",
-                    icon: process.launcher.imgPath + "weather.svg",
+                    icon: "fa-sun fas",
                     type: ""
                 })
             }

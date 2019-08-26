@@ -154,7 +154,7 @@ class Translate extends Module {
                     list.push({
                         name: result.translation,
                         desc: "",
-                        icon: process.launcher.imgPath + "/copy.svg",
+                        icon: "fa-copy far",
                         type: "copy",
                         copy: result.translation,
                         id: 1003153

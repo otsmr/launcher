@@ -2,7 +2,7 @@
     {
         "name": "Herunterfahren",
         "desc": "Computer herunterfahren",
-        "icon": "$imgPath/reboot.svg",
+        "icon": "fa-power-off fas",
         "type": "command",
         "command": "shutdown -s -t 0",
         "exact": "down"
@@ -10,7 +10,7 @@
     {
         "name": "Musik öffnen",
         "desc": "Standart Musik öffnen",
-        "icon": "$imgPath/music.svg",
+        "icon": "fa-music fas",
         "type": "command",
         "command": "cmd /c start mswindowsmusic:",
         "exact": "music"
@@ -18,7 +18,7 @@
     {
         "name": "Neu starten",
         "desc": "Computer neu starten",
-        "icon": "$imgPath/reboot.svg",
+        "icon": "fa-power-off fas",
         "type": "command",
         "command": "shutdown -s -r -t 0",
         "exact": "restart"
@@ -26,7 +26,7 @@
     {
         "name": "Abmelden",
         "desc": "Abmelden",
-        "icon": "$imgPath/reboot.svg",
+        "icon": "fa-power-off fas",
         "type": "command",
         "command": "shutdown -l",
         "exact": "logoff"
@@ -34,7 +34,7 @@
     {
         "name": "Sperren",
         "desc": "Computer sperren",
-        "icon": "$imgPath/reboot.svg",
+        "icon": "fa-lock fas",
         "type": "command",
         "command": "rundll32.exe user32.dll, LockWorkStation",
         "exact": "lock"
@@ -42,7 +42,7 @@
     {
         "name": "Energiesparmodus",
         "desc": "Computer in den Energiesparmodus versetzen",
-        "icon": "$imgPath/reboot.svg",
+        "icon": "fa-power-off fas",
         "type": "command",
         "command": "powershell \"Add-Type -Assemblyname System.Windows.Forms; [System.Windows.Forms.Application]::SetSuspendState( 'Suspend', $false, $false)\"",
         "exact": "sleep"
@@ -99,7 +99,7 @@
         "name": "Taschenrechner",
         "desc": "Taschenrechner öffneen",
         "type": "command",
-        "icon": "$imgPath/calc.svg",
+        "icon": "fa-calculator fas",
         "command": "calc.exe",
         "exact": "calc"
     }

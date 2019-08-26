@@ -75,7 +75,7 @@ class Search extends Module {
 
         this.item = {
             name: "Suchmaschinen",
-            icon: process.launcher.imgPath + "duck.svg"
+            icon: process.launcher.imgPath + "/engine/duck.svg"
         }
         
     }

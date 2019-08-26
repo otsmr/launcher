@@ -13,7 +13,7 @@ class Battery extends Module {
         this.item = {
             name: "Ergebnis: ",
             desc: "",
-            icon: process.launcher.imgPath + "/calc.svg",
+            icon: "fa-calculator fas",
         }
 
     }
