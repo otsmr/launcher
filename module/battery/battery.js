@@ -59,7 +59,7 @@ class Battery extends Module {
 
         const infos = this.getBatteryInfo();
 
-        if (!infos) return this.send([this.item],  sendIDs);
+        if (!infos) return this.send([this.item],  sendID);
         const def = {
             ...this.item,
             desc: ""
