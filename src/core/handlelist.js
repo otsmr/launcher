@@ -2,12 +2,9 @@
 
 require("./globalconfig");
 
-const fs = require("fs");
 const search = require("./search");
-const { shell } = require("electron");
+const { shell, clipboard } = require("electron");
 const { exec, spawn } = require('child_process');
-const path = require("path");
-const clipboardy = require("clipboardy");
 const installer = require("../../module/installer");
 
 class HandleList {
@@ -268,7 +265,7 @@ class HandleList {
         }
         
         switch (run.type) {
-            case "copy": clipboardy.writeSync(run.copy); break;
+            case "copy": clipboard.writeText(run.copy); break;
             case "application": shell.openItem(run.path); break;
             case "command": exec(run.command); break;
             case "commandps": spawn("powershell.exe", [run.command]);break;
