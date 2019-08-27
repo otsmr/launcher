@@ -10,10 +10,9 @@ const getBookmarks = () => {
                     .replace("http://", "");
                 e.name = n.slice(0, n.indexOf("/"));
             }
-            e.desc =  `Firefox in ${e.folder}`;
+            e.desc = `Firefox in ${e.folder} (${e.url})`;
             e.type= "website";
-            e.icon = "https://proxy.oabos.de/" + e.icon;
-            console.log(e.iconuri); // Bug fix!!!
+            if (!e.icon.startsWith("fa-")) e.icon = "https://proxy.oabos.de/" + e.icon;
             return e;
         })
     );

@@ -22,10 +22,11 @@ class BookmarkParse {
                     res.push({
                         name: item.title.replace("-  -", "-"),
                         lastModified: item.lastModified,
-                        icon: item.iconuri,
+                        icon: (item.iconuri != undefined) ? item.iconuri : "fa-link fas",
                         url: item.uri,
                         folder: title
                     });
+                    // console.log(item.iconuri);
                 }
 
                 if (item.children) {
