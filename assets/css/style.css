@@ -6,9 +6,6 @@ body {
     margin: 0;
     overflow: hidden;
 }
-.main {
-    
-}
 input {
     width: calc(100% - 60px);
     padding: 10px;
@@ -53,7 +50,7 @@ ul li:last-child {
     border: 0;
 }
 ul li.aktiv {
-    background:#f0efef;
+    background:#fff;
 }
 ul li.exact {
     background: #fff;

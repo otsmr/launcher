@@ -19,6 +19,15 @@ class Search extends Module {
                 "waitAfterInput": 500,
                 "engines": [
                     {
+                        "prefix": "w ",
+                        "name": "Wikipedia: <b>$query</b>",
+                        "desc": "Auf Wikipedia nach $query suchen",
+                        "icon": "$imgPath/engine/wikipedia.png",
+                        "engine": "wikipedia",
+                        "suggestqueries": true,
+                        "url": "https://de.wikipedia.org/w/index.php?title=Spezial%3ASuche&fulltext=Suchen&search=$query"
+                    },
+                    {
                         "prefix": "s ",
                         "name": "Startpage: <b>$query</b>",
                         "desc": "Auf Startpage nach $query suchen",

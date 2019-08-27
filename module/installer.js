@@ -46,5 +46,9 @@ module.exports = [
     {
         installer: require("./weather/weather"),
         id: "weather.wettercom"
+    },
+    {
+        installer: require("./bookmarks/bookmarks"),
+        id: "bookmarks.launcher"
     }
 ]

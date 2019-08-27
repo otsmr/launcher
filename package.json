@@ -32,7 +32,8 @@
 		"iconv-lite": "^0.5.0",
 		"moment": "^2.24.0",
 		"node-google-translate-skidz": "^1.1.2",
-		"request": "^2.88.0"
+		"request": "^2.88.0",
+		"snappyjs": "^0.6.0"
 	},
 	"devDependencies": {
 		"electron": "^6.0.3",
