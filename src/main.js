@@ -21,7 +21,7 @@ if (app.requestSingleInstanceLock()) {
 
     app.on('second-instance', (event, commandLine) => {
         if (!mainWindow) return;
-        mainWindow.toogle(false);
+        mainWindow.toogleMe(false);
     });
 
     app.on('will-quit', () => {
