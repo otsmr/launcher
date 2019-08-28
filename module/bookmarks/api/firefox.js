@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require("path");
 const lz4decoder = require("./lz4decoder");
 const execSync = require("child_process").execSync;
+const fav = require("fetch-favicon").fetchFavicon;
 
 class BookmarkParse {
 
@@ -12,9 +13,9 @@ class BookmarkParse {
         );
     }
 
-    parseBookmarks(json) {
+    async parseBookmarks(json) {
 
-        const getChildren = (items, res, title = "") => {
+        const getChildren = async (items, res, title = "") => {
 
             for (const item of items) {
 
@@ -26,12 +27,11 @@ class BookmarkParse {
                         url: item.uri,
                         folder: title
                     });
-                    // console.log(item.iconuri);
                 }
 
                 if (item.children) {
                     if (title !== "") item.title = title + " > " + item.title;
-                    getChildren(item.children, res, item.title);
+                    await getChildren(item.children, res, item.title);
                 }
 
             }
@@ -39,32 +39,38 @@ class BookmarkParse {
         }
 
         let res = [];
-        getChildren([json], res);
+        await getChildren([json], res);
         return res;
 
     }
 
-    getBookmarks() {
+    async getBookmarks() {
 
         const profiles = fs.readdirSync(this.firefoxProfile);
 
         let bookmarks = [];
 
-        for (const profil of profiles) {
+        try {
 
-            const src = path.join(this.firefoxProfile, profil, "bookmarkbackups");
-            const last = fs.readdirSync(src);
-            bookmarks = bookmarks.concat(
-                this.parseBookmarks(
-                    JSON.parse(
-                        lz4decoder(
-                            fs.readFileSync(
-                                path.join(src, last[last.length - 1])
+            for (const profil of profiles) {
+    
+                const src = path.join(this.firefoxProfile, profil, "bookmarkbackups");
+                const last = fs.readdirSync(src);
+                bookmarks = bookmarks.concat(
+                    await this.parseBookmarks(
+                        JSON.parse(
+                            lz4decoder(
+                                fs.readFileSync(
+                                    path.join(src, last[last.length - 1])
+                                )
                             )
                         )
                     )
-                )
-            );
+                );
+            }
+            
+        } catch (error) {
+            console.log(error);
         }
 
         return bookmarks;
@@ -72,6 +78,6 @@ class BookmarkParse {
 
 }
 
-module.exports = () => {
-    return new BookmarkParse().getBookmarks();
+module.exports = async () => {
+    return await new BookmarkParse().getBookmarks();
 }

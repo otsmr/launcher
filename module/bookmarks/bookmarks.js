@@ -1,23 +1,5 @@
 "use strict";
-
-const getBookmarks = () => {
-    let bookmarks = [];
-    bookmarks = bookmarks.concat(
-        require("./api/firefox")().map(e => {
-            if (e.name === "") {
-                let n = e.url
-                    .replace("https://", "")
-                    .replace("http://", "");
-                e.name = n.slice(0, n.indexOf("/"));
-            }
-            e.desc = `Firefox in ${e.folder} (${e.url})`;
-            e.type= "website";
-            if (!e.icon.startsWith("fa-")) e.icon = "https://proxy.oabos.de/" + e.icon;
-            return e;
-        })
-    );
-    return bookmarks;
-}
+const getBookmarks = require("./api/index");
 const Module = require("../module");
 
 class Bookmarks extends Module {
@@ -47,19 +29,32 @@ class Bookmarks extends Module {
             prefix: this.prefix,
             noEnter: true,
             onInput: (search, sendID) => {
-                return this.display(search, sendID);
+                this.display(search, sendID);
+                return true;
             }
         })
 
     }
 
-    display (query, sendID) {
+    async display (query, sendID) {
+
+        if (query.startsWith("-")) {
+            if (query === "-update") {
+                this.setInput(this.prefix, false);
+                return this.send(getBookmarks(true));
+            }
+            return this.send({
+                ...this.item,
+                name: "Parameter nicht bekannt",
+                desc: "Aktualisieren: -update"
+            })
+        }
+
         if (query === "") {
             this.send(this.item);
         } else {
-            this.send(this.search.list(query, getBookmarks()));
+            this.send(this.search.list(query, await getBookmarks()));
         }
-        return true;
     }
 
 }
