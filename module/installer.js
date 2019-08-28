@@ -50,5 +50,9 @@ module.exports = [
     {
         installer: require("./bookmarks/bookmarks"),
         id: "bookmarks.launcher"
+    },
+    {
+        installer: require("./youtube/youtube"),
+        id: "youtube.oabos"
     }
 ]
