@@ -44,6 +44,7 @@ class Weather extends Module {
             this.send(this.item, sendID);
             return true;
         }
+        name = name.replace("ä", "a").replace("ö", "o").replace("ü", "u");
 
         weather.search(name, (citys) => {
             if (!citys) return;
