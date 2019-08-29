@@ -1,6 +1,6 @@
 
 # Launcher
-Ein Open-Source-Launcher, der vollständig erweiterbar ist. Schnellzugriff auf Einstellungen, Webseiten oder Programme. Einfach installieren und sofort starten und bei Bedarf erweitern.
+Ein Open-Source-Launcher, der vollständig erweiterbar ist. Schnellzugriff auf Einstellungen, Webseiten oder Programme. Einfach installieren, starten und bei Bedarf erweitern.
 Es gibt verschiedene Module, die viele verschiedene Funktionen mitbringen.
 
 ## Getting Started
