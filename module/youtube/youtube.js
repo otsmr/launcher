@@ -1,8 +1,4 @@
-
-// https://proxy.oabos.de/https://img.youtube.com/vi/<?php echo $wID ?>/mqdefault.jpg
-
-
-
+const {BrowserWindow} = require("electron");
 "use strict";
 const request = require("request");
 const Module = require("../module");
@@ -16,7 +12,9 @@ class Youtube extends Module {
                 "prefix": "yt",
                 "apikey": ""
             }
-        })
+        });
+
+        this.ytImages = `https://proxy.oabos.de/https://img.youtube.com/vi/$wID/mqdefault.jpg`
         
         this.item = {
             name: "YouTube Feed by oabos.de",
@@ -49,15 +47,43 @@ class Youtube extends Module {
                 
             },
             onSelect: (query, item, sendID) => {
-                this.showFeed(sendID);
+                this.showFeed(sendID, item);
             }
         })
 
     }
 
-    showFeed (sendID) {
-        // https://oabos.de/?apikey=
+    showFeed (sendID, item) {
+
+        
+        if (item.video) {
+            
+            console.log(item.link);
+
+            this.window = new BrowserWindow({
+                height: 475,
+                width: 800,
+                center: true,
+                icon: process.launcher.imgPath + "engine/youtube.png",
+                alwaysOnTop: true,
+                title: item.name + ' - YouTube'
+            });
+            this.window.loadURL(item.link);
+            this.window.removeMenu();
+            this.mainWindow.toggleMe(true);
+            return;
+        }
         this.setInput(this.prefix, false);
+
+        if (this.config.apikey === "") {
+            return this.send({
+                ...this.item,
+                name: "API-Key nicht gefunden",
+                desc: "Einstellungen öffnen",
+                type: "application",
+                path: process.launcher.appData + "/config.json",
+            });
+        }
 
         request(`https://oabos.de/?apikey=${this.config.apikey}`, (err, res, req) => {
             try {
@@ -67,23 +93,58 @@ class Youtube extends Module {
                     for (const item of json.chanel) {
                         if (item.id === id) return item.name;
                     }
-                    return "Unbekannt"
+                    return "-";
 
                 }
-                let r = [];
+                let feed = [];
+
                 for (const i in json.feed) {
                     if (!json.feed.hasOwnProperty(i)) continue;
-                    const item = json.feed[i];
+                    feed.push(json.feed[i]);
+                }
+
+                feed = feed.sort((a, b)=> {
+
+                    const dates = ["Sekunde", "Sekunden", "Minute", "Minuten", "Stunde", "Stunden", "Tag", "Tagen", "Monat", "Monaten", "Jahr", "Jahren"]
+
+                    const aDate = dates.indexOf(a.date.split(" ")[1]);
+                    const bDate = dates.indexOf(b.date.split(" ")[1]);
+
+                    if (aDate > bDate) {
+                        return 1;
+                    } else {
+                        if (aDate === bDate) {
+                            if (a.date.split(" ")[0] > b.date.split(" ")[0]) {
+                                return 1;
+                            }
+                        }
+                        return -1;
+                    }
+
+                })
+                let r = [];
+                let id = 100;
+                for (const item of feed) {
                     if (!item.title) return;
+                    const wID = item.link.substr(item.link.indexOf("=") + 1, item.link.length);
                     r.push({
                         ...this.item,
                         name: item.title,
-                        desc: `Von ${getName(item.id)}`
+                        video: true,
+                        id,
+                        box: {
+                            pos: "left",
+                            html: `<div class="img">
+                                <img src="${this.ytImages.replace("$wID", wID)}">
+                            </div>`
+                        },
+                        link: "https://www.youtube.com/embed/" + wID,
+                        desc: `Von <b>${getName(item.id)}</b> hochgeladen am <b>${item.date}</b>`
                     });
+                    id++;
                 }   
                 this.send(r);
             } catch (error) {
-                console.log(error);
                 this.send({
                     ...this.item,
                     name: "Feed konnte nicht geladen werden"

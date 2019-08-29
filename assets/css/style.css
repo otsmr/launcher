@@ -85,6 +85,21 @@ ul li .img img {
     width: 100%;
 }
 
+ul li .box {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+ul li .box .img {
+    width: 100%;
+    max-width: 180px;
+    min-width: 180px;
+}
+ul li .box .content .img {
+    display: none;
+}
+
 ul li .text > * {
     margin: 0;
     overflow: hidden;

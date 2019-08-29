@@ -49,6 +49,6 @@ if (!fs.existsSync(process.launcher.modulePathData)) {
     fs.mkdirSync(process.launcher.modulePathData);
 }
 
-// if (!fs.existsSync(process.launcher.config)) {
+if (!fs.existsSync(userdata + "/config.json")) {
     fs.copyFileSync(root + "/config.json", userdata + "/config.json")
-// }
+}

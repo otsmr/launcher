@@ -27,12 +27,24 @@ class List {
                     item.icon = `<div class="img"> <img src="${item.icon}"> </div>`
                 }
 
-                html += `<li toinput="${(item.toinput) ? item.toinput : ""}" list-id="${item.id}" class="${(item.isExact) ? "exact": ""}">
-                    ${item.icon}
-                    <div class="text">
-                        <h1>${item.name}</h1>
-                        <p>${item.desc}</p>
+                let content = `${item.icon}
+                <div class="text">
+                    <h1>${item.name}</h1>
+                    <p>${item.desc}</p>
+                </div>`;
+
+                if (item.box) {
+                    content = `
+                    <div class="box">
+                        ${(item.box.pos === "left") ? `<div>${item.box.html}</div>` : ""}
+                        <div class="content"> ${content} </div>
+                        ${(item.box.pos !== "left") ? `<div>${item.box.html}</div>` : ""}
                     </div>
+                    `
+                }
+
+                html += `<li toinput="${(item.toinput) ? item.toinput : ""}" list-id="${item.id}" class="${(item.isExact) ? "exact": ""}">
+                    ${content}
                 </li>
                 `
             }
