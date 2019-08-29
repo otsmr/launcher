@@ -1,10 +1,13 @@
 const { app, globalShortcut } = require('electron');
 const path = require("path");
-const WindowPosition = require("electron-window-position");
 const windowHelper = require("./app/window");
 const TrayIcon = require("./app/tray");
 const ipc = require("./core/ipc");
 const AutoLaunch = require("auto-launch");
+
+const Positioner = require('electron-positioner');
+
+
 require("./core/globalconfig");
 
 if (app.requestSingleInstanceLock()) {
@@ -30,18 +33,7 @@ if (app.requestSingleInstanceLock()) {
 
     app.on('ready', () => {
 
-        // Get position for centered window
-        let pos = {
-            center: true
-        }
-        try {
-            pos = new WindowPosition().getActiveScreenCenter(600,300);
-        } catch (error) {
-            console.log(error);
-        }
-        
         mainWindow = windowHelper('main', {
-            ...pos,
             width: 600,
             height: 400,
             maxHeight: 400,
@@ -64,6 +56,7 @@ if (app.requestSingleInstanceLock()) {
                 nodeIntegration: true
             }
         });
+        const positioner = new Positioner(mainWindow)
         
         ipc(app, mainWindow);
         new TrayIcon(app, mainWindow);
@@ -73,14 +66,16 @@ if (app.requestSingleInstanceLock()) {
             try {
                 if ((hide && hide !== "n") || (hide === "n" && mainWindow.getPosition()[1] > 0)) {
                     mainWindow.webContents.send('toinput', "");
-                    mainWindow.setPosition(pos.x, -500);
+                    mainWindow.setPosition(0, -500);
                     mainWindow.webContents.send('hide');
                 } else {
-                    mainWindow.setPosition(pos.x, 30);
+                    positioner.move("topCenter")
                     mainWindow.focus()
                     mainWindow.webContents.send('show');
                 } 
-            } catch (error) { }
+            } catch (error) {
+                console.log(error);
+            }
             
         }
 
@@ -97,7 +92,7 @@ if (app.requestSingleInstanceLock()) {
         const ret = globalShortcut.register(hotkey, () => {
             mainWindow.toggleMe();
         });
-        
+
         mainWindow.toggleMe(true);
 
         if (!ret) console.log("Shortcut:", 'registration failed');

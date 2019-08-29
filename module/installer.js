@@ -54,5 +54,9 @@ module.exports = [
     {
         installer: require("./youtube/youtube"),
         id: "youtube.oabos"
+    },
+    {
+        installer: require("./ontop/ontop"),
+        id: "ontop.launcher"
     }
 ]

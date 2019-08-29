@@ -2,6 +2,7 @@ const {BrowserWindow} = require("electron");
 "use strict";
 const request = require("request");
 const Module = require("../module");
+const Positioner = require('electron-positioner');
 
 class Youtube extends Module {
 
@@ -63,8 +64,11 @@ class Youtube extends Module {
                 center: true,
                 icon: process.launcher.imgPath + "engine/youtube.png",
                 alwaysOnTop: true,
+                darkTheme: true,
                 title: item.name + ' - YouTube'
             });
+            const pos = new Positioner(this.window);
+            pos.move("center");
             this.window.loadURL(item.link);
             this.window.removeMenu();
             this.mainWindow.toggleMe(true);
