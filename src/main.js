@@ -70,15 +70,18 @@ if (app.requestSingleInstanceLock()) {
 
         mainWindow.toggleMe = (hide = "n") => {
 
-            if ((hide && hide !== "n") || (hide === "n" && mainWindow.getPosition()[1] > 0)) {
-                mainWindow.webContents.send('toinput', "");
-                mainWindow.setPosition(pos.x, -500);
-                mainWindow.webContents.send('hide');
-            } else {
-                mainWindow.setPosition(pos.x, 30);
-                mainWindow.focus()
-                mainWindow.webContents.send('show');
-            }
+            try {
+                if ((hide && hide !== "n") || (hide === "n" && mainWindow.getPosition()[1] > 0)) {
+                    mainWindow.webContents.send('toinput', "");
+                    mainWindow.setPosition(pos.x, -500);
+                    mainWindow.webContents.send('hide');
+                } else {
+                    mainWindow.setPosition(pos.x, 30);
+                    mainWindow.focus()
+                    mainWindow.webContents.send('show');
+                } 
+            } catch (error) { }
+            
         }
 
         let hotkey = false;
@@ -94,6 +97,7 @@ if (app.requestSingleInstanceLock()) {
         const ret = globalShortcut.register(hotkey, () => {
             mainWindow.toggleMe();
         });
+        
         mainWindow.toggleMe(true);
 
         if (!ret) console.log("Shortcut:", 'registration failed');
