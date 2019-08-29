@@ -54,11 +54,8 @@ class Youtube extends Module {
     }
 
     showFeed (sendID, item) {
-
         
         if (item.video) {
-            
-            console.log(item.link);
 
             this.window = new BrowserWindow({
                 height: 475,
