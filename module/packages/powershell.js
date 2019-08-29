@@ -22,7 +22,7 @@ module.exports = new class {
 
     getJSON (befehl, params = []) {
 
-        const file = path.join(__dirname, "/tmp.json");
+        const file = path.join(process.launcher.modulePathData, "/tmp.json");
         if (params.length > 0) {
             befehl += ` | Select-Object -Property ${params.join(", ")}`
             befehl += ` | ConvertTo-Json`
