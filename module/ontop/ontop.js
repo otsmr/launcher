@@ -46,13 +46,13 @@ class OnTop extends Module {
 
     openWindow (url) {
         
-        if (!url.startsWith("https://")) {
-            this.setInput(this.prefix + url, false);
-            return this.send({
-                ...this.item,
-                name: "Keine gültige Webseite! Muss mit <b>https://</b> beginnen"
-            });
-        }
+        // if (!url.startsWith("https://")) {
+        //     this.setInput(this.prefix + url, false);
+        //     return this.send({
+        //         ...this.item,
+        //         name: "Keine gültige Webseite! Muss mit <b>https://</b> beginnen"
+        //     });
+        // }
 
         if (this.config.youtubeOnlyVideo && url.indexOf("youtube.com") > -1) {
             url = `https://youtube.com/embed/${url.substr(url.indexOf("=") + 1, url.length)}`
