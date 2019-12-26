@@ -7,12 +7,11 @@ const AutoLaunch = require("auto-launch");
 
 const Positioner = require('electron-positioner');
 
-
 require("./core/globalconfig");
 
 if (app.requestSingleInstanceLock()) {
-
     let mainWindow;
+    
     const exe = app.getPath("exe");
     if (!exe.endsWith("electron.exe")) {
         const autolaunch = new AutoLaunch({
@@ -24,7 +23,7 @@ if (app.requestSingleInstanceLock()) {
 
     app.on('second-instance', (event, commandLine) => {
         if (!mainWindow) return;
-        mainWindow.toogleMe(false);
+        mainWindow.toggleMe(false);
     });
 
     app.on('will-quit', () => {
@@ -32,6 +31,28 @@ if (app.requestSingleInstanceLock()) {
     })
 
     app.on('ready', () => {
+
+        if (process.launcher.config().showWelcome) {
+        
+            const window = windowHelper('showWelcome', {
+                width: 600,
+                height: 400,
+                show: true,
+                vibrancy: 'dark',
+                minimizable: false,
+                maximizable: false,
+                fullscreenable: false,
+                title: 'Willkommen',
+                url: path.join('file://', __dirname, '/../assets/welcome.html'),
+                webPreferences: {
+                    backgroundThrottling: false,
+                    nodeIntegration: true
+                }
+            });
+
+            window.setMenu(null);
+        
+        }
 
         mainWindow = windowHelper('main', {
             width: 600,

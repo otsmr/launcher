@@ -28,4 +28,10 @@ module.exports = (app, mainWindow) => {
         shell.openItem(process.launcher.appData + "/config.json");
     });
 
+    ipcMain.on("config", (event, param, value)=>{
+        process.launcher.config()[param] = value;
+        process.launcher.config(true);
+        console.log(param, value);
+    })
+
 }
