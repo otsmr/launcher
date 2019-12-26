@@ -28,10 +28,6 @@ module.exports = [
         id: "quick.launcher"
     },
     {
-        installer: require("./screenshot/screenshot"),
-        id: "screenshot.launcher"
-    },
-    {
         installer: require("./search/search"),
         id: "search.launcher"
     },

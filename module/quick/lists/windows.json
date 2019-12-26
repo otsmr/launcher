@@ -8,6 +8,14 @@
         "exact": "down"
     },
     {
+        "name": "Systemsteuerung",
+        "desc": "Systemsteuerung öffnen",
+        "icon": "$imgPath/windows/control.png",
+        "type": "command",
+        "command": "Control",
+        "exact": "sys"
+    },
+    {
         "name": "Musik öffnen",
         "desc": "Standart Musik öffnen",
         "icon": "fa-music fas",

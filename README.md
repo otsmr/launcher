@@ -93,14 +93,6 @@ Computer schnell Herunterfahren, Neu Starten, ...
 ![Schnellstarter](./docs/img/quick.png)
 
 
-
-## Screenshot *(Windows)*
-
-* Prefix: **shot**
-
-![Screenshot](./docs/img/shot1.png)
-![Screenshot](./docs/img/shot2.png)
-
 ## Übersetzer
 
 Schnell mit **Google Translate** Texte übersetzen

@@ -58,7 +58,7 @@ class Translate extends Module {
     changeLang (input) {
     
         const data = input.split(" ");
-        if (data[0] === "change") {
+        if (data[0] === "c") {
             const from = this.config.translate.from;
             this.config.translate.from = this.config.translate.to;
             this.config.translate.to = from;
@@ -69,7 +69,7 @@ class Translate extends Module {
             return this.send([{
                 ...this.item,
                 name: "Parameter nicht bekannt",
-                desc: "Richting auswählen: -to, -from; Sprachen tauschen: -change "
+                desc: "Richting auswählen: -to, -from; Sprachen tauschen: -c "
             }]);
         }
         let array = [];
@@ -148,31 +148,37 @@ class Translate extends Module {
 
         this.timeout = setTimeout(() => {
 
-            translate(data, (result) => {
-                let list = []
-                try {
+            try {
+                
+                translate(data, (result) => {
+                    let list = []
+                    if (!result.translation) {
+                        list.push({
+                            ...this.item,
+                            name: "Fehler bei der Übersetzung",
+                            desc: ""
+                        });
+                    } else {
+                        list.push({
+                            name: result.translation,
+                            desc: "",
+                            icon: "fa-copy far",
+                            type: "copy",
+                            copy: result.translation,
+                            id: 1003153
+                        });
+                    }
                     list.push({
-                        name: result.translation,
-                        desc: "",
-                        icon: "fa-copy far",
-                        type: "copy",
-                        copy: result.translation,
-                        id: 1003153
+                        ...this.item,
+                        desc: data.text,
+                        name: name
                     });
-                } catch (error) {
-                    list.push({
-                        name: "Fehler bei der Übersetzung",
-                        icon: process.launcher.imgPath + "/engine/gtranslate.png"
-                    });
-                }
-                list.push({
-                    ...this.item,
-                    desc: data.text,
-                    name: name
+                    this.send(list);    
+        
                 });
-                this.send(list);    
-    
-            });
+            } catch (error) {
+                console.log("ERROR");
+            }
             
         }, this.config.waitAfterInput || 1000);
 

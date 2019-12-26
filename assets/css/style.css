@@ -5,36 +5,84 @@
 body {
     margin: 0;
     overflow: hidden;
+
+
+    /* background: url(./../back.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    width: 100vw; */
 }
-input {
+
+.main {
     width: calc(100% - 60px);
-    padding: 10px;
-    font-size: 25px;
-    height: 63px;
-    background: rgba(59, 59, 59, 0.733);
-    margin: 24px auto;
+    max-width: 670px;
+    margin: 25px auto;
+    box-shadow: 0 3px 8px 0px rgba(0,0,0,.23);
+    /* border-radius: 5px; */
+    overflow: hidden;
+}
+
+.main header {
+    display: flex;
+    height: 0px;
+    transition: 150ms;
+    background: #000;
+    padding: 0px 14px;
+}
+.main.focus header {
+    padding: 3px 14px;
+    height: 23px;
+}
+.main header div {
+    flex: 1;
+    font-size: 11px;
+    align-items: center;
+}
+.main header .title {
     color: #fff;
-    outline: none;
+}
+.main header .img {
+    color: #fff;
+}
+.main header .img img {
+    width: 100%;
+    max-width: 15px;
+    margin: 0 auto;
     display: block;
-    box-shadow: 0 2px 20px -10 rgb(0, 0, 0);
-    border: 1px solid #7e7e7edc;
-    border-radius: 0px;
+}
+.main header .link {
+    color: #707070;
+    text-align: right;
+    cursor: pointer;
+}
+.main header .link:hover {
+    color: #fff;
+}
+
+input {
+    background: #2A2A2A;
+    border: 0;
+    margin: 0;
+    padding: 11px 13px;
+    font-size: 20px;
+    color: #fff;
+    width: 100%;
+    outline: none;
 }
 
 ul {
     list-style: none;
     padding: 0;
-    width: calc(100% - 40px);
+    width: 100%;
     margin: 0 auto;
-    background: #d8d8d8;
-    margin-top: -14px;
-    border: 1px solid #7e7e7edc;
+    background: #2A2A2A;
+    margin-top: 0px;
     max-height: 300px;
     overflow: hidden;
     position: relative;
     display: none;
-    border-radius: 5px;
-    background: #eeeeeef0;
 }
 
 ul li {
@@ -42,7 +90,7 @@ ul li {
     -webkit-box-align: center;
     align-items: center;
     cursor: pointer;
-    border-bottom: 1px solid #c0c0c0;
+    /* border-bottom: 1px solid #c0c0c0; */
     padding: 2px 0;
     min-height: 50px;
 }
@@ -50,10 +98,10 @@ ul li:last-child {
     border: 0;
 }
 ul li.aktiv {
-    background:#fff;
+    background:#3D3D3D;
 }
 ul li.exact {
-    background: #fff;
+    background: #3D3D3D;
     position: relative;
 }
 ul li.exact::after {
@@ -109,8 +157,12 @@ ul li .text > * {
     text-align: left;
 }
 ul li .text h1 {
-    color: #000;
+    color: #b3b3b3;
     font-size: 19px;
+    font-weight: normal;
+}
+ul li .text h1 b {
+    color: #fff;
     font-weight: normal;
 }
 ul li .text p {

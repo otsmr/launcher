@@ -77,7 +77,7 @@ class List {
         const itemBottom = itemTop + $aktiv.height();
 
         if (itemBottom > bottom) {
-            this.$ul[0].scrollTop = $aktiv[0].offsetTop - this.$ul.height() + $aktiv.height() + 10;
+            this.$ul[0].scrollTop = $aktiv[0].offsetTop - this.$ul.height() + $aktiv.height() + 5;
         }
         if (itemTop < top) {
             this.$ul[0].scrollTop = $aktiv[0].offsetTop;
@@ -141,8 +141,12 @@ $(()=>{
         }
 
     }).blur(() => {
+        $("input").focus();
         $("input").val("");
         $("ul").empty().fadeOut(0);
+        if ($(".settings").is(":hover")) {
+            ipcRenderer.send('openSettings');
+        }
         setTimeout(() => {
             ipcRenderer.send('close');
         }, 20);
@@ -150,10 +154,12 @@ $(()=>{
 
     ipcRenderer.on("show", () => {
         $("input").prop("readonly", false).focus();
-        $("input");
+        $(".main").addClass("focus");
     })
     ipcRenderer.on("hide", () => {
+        $("input").focus();
         $("input").prop("readonly", true);
+        $(".main").removeClass("focus");
     })
 
 })

@@ -1,6 +1,7 @@
 "use strict";
 const { ipcMain, ipcRenderer } = require('electron');
 const handlelist = require("./handlelist");
+const { shell } = require("electron");
 
 
 module.exports = (app, mainWindow) => {
@@ -21,6 +22,10 @@ module.exports = (app, mainWindow) => {
 
         mainWindow.toggleMe(true);
 
+    });
+
+    ipcMain.on('openSettings', (event, query) => {
+        shell.openItem(process.launcher.appData + "/config.json");
     });
 
 }

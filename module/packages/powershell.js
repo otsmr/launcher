@@ -3,7 +3,6 @@ const spawnSync = require('child_process').spawnSync;
 const fs = require("fs");
 const path = require("path");
 const geticonps1 = require("./ps/get-icon");
-const screenshot = require("./ps/screenshot");
 
 module.exports = new class {
 
@@ -67,10 +66,6 @@ module.exports = new class {
             return false;
         }
     
-    }
-
-    screenshot (path){
-        this.run(`${screenshot}; screenshot ${path}`);
     }
 
 }

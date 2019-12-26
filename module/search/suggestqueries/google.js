@@ -12,7 +12,7 @@ const getAllSuggestions = (string, call) => {
             uri: searchURL + encodeURIComponent(string)
         }, (err, res, body) => {
 
-	  	if (err || res.statusCode !== 200) call(err);
+	  	if (err || res.statusCode !== 200) return call(err);
         const result = JSON.parse(iconv.decode(new Buffer.from(body), "ISO-8859-1"));
         let suggestions = result[1].map((suggestion, index) => {
             return {

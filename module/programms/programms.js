@@ -32,7 +32,7 @@ class Programms extends Module {
 
         list.push({
             name: "Programmliste aktualisieren",
-            desc: "Liste der Programme aktualisieren (automatisch: 24h)",
+            desc: "Liste der Programme aktualisieren",
             icon: process.launcher.imgPath + "windows/application.png",
             exact: "-update",
             id: 99999,

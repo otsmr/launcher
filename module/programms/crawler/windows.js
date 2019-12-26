@@ -141,19 +141,9 @@ class Crawler {
 
         const openApxPS = (name, zune = false) => {
             return `
-            function open-appx {
-                Param ( 
-                    [string]$Name
-                )
-                $pkgName = (Get-AppxPackage -Name $Name).PackageFamilyName;
-                $Proc = @{
-                    FilePath = 'explorer.exe'
-                    ArgumentList = "shell:AppsFolder\\$pkgName!${(zune) ? name : "App"}"
-                    ${(zune) ? "" : "Verb = 'RunAs'"}
-                };
-                Start-Process @proc;
-            };
-            open-appx -Name ${name}`;
+            $pkgName = (Get-AppxPackage -Name ${name}).PackageFamilyName;
+            cmd.exe /c "explorer.exe shell:AppsFolder\\$pkgName!${(zune) ? name : "App"}";
+            `
         }
 
         let appList = [];
@@ -190,17 +180,6 @@ class Crawler {
 }
 
 module.exports = (home, force = false) => {
-
-    try {
-        const listFile = fs.statSync(home + "list.json");
-        const birth = new Date(listFile.mtime).getTime();
-        const d = new Date();
-        d.setDate(d.getDate() - 1);
-        const last24 = d.getTime();
-        if (birth < last24) force = true;
-    } catch (error) {
-        force = true;
-    }
     
     if (force) {
         const newList = new Crawler(home).json;
