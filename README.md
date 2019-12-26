@@ -1,13 +1,38 @@
+<p align="center">
+  <a href="https://oproj.de/">
+    <img src="./assets/img/logo.png" width="150">
+  </a>
+</p>
 
-# Launcher
-Ein Open-Source-Launcher, der vollständig erweiterbar ist. Schnellzugriff auf Einstellungen, Webseiten oder Programme. Einfach installieren, starten und bei Bedarf erweitern.
-Es gibt verschiedene Module, die viele verschiedene Funktionen mitbringen.
+<h3 align="center">Launcher</h3>
 
-## Getting Started
-### Download
-Auf der [Release Page](https://github.com/otsmr/launcher/releases) gibt es die aktuelle Version des Launchers zum herunterladen.
+<p align="center">
+    Open-Source-Launcher, der vollständig erweiterbar ist.<br> Schnellzugriff auf Einstellungen, Webseiten oder Programme.<br>
+    Einfach installieren, starten und bei Bedarf erweitern.
+    <br><br>
+    <a href="https://github.com/otsmr/launcher/releases"><strong>-- Download --</strong></a>
+    <br>
+    <br>
+    <img src="https://img.shields.io/badge/platform-windows-%23097aba" alt="Platform">
+</p>
 
-### Kompilieren
+
+
+# Inhaltsverzeichnis
+* <a href="#quickstart">Quickstart</a>
+* <a href="#dokumenation">Dokumenation</a>
+* <a href="#module">Module</a>
+* <a href="#copyright-und-lizenz">Copyright und Lizenz</a>
+
+# Quickstart
+
+Auf der [Release Page](https://github.com/otsmr/launcher/releases) gibt es den Installer für Windows zum herunterladen.
+
+# Module
+
+# Dokumenation
+
+## Kompilieren
 
 ```bash
 git clone https://github.com/otsmr/launcher.git
@@ -16,118 +41,85 @@ npm install
 npm run dist
 ```
 
-# Alle Module
+## eigenes Modul
 
-* Module anzeigen/verwalten: **?**
+```/module```
 
+```javascript
+"use strict";
 
-## Dateiensuche *(Windows)*
-* Prefix: **>**
+const Module = require("../module");
 
+class EigenesModul extends Module {
 
-Mithilfe des SYSTEMINDEX von Windows und der Powershell in Sekundenschnelle Dateien und Ordner finden. Suche basiert auf [filesearch](https://github.com/otsmr/filesearch).
+    constructor (a, b) {
+        super("modulID", a, b, {
+            "enabled": true,
+            "config": { }
+        })
 
-![Dateisuche](./docs/img/filesearch.png)
-### Beispiele
-**Suche alle Bilder** [Mehr](https://github.com/otsmr/filesearch#extstringarray)
-- ```>* -ext png,jpg,bmp```
-- ```>* -kind picture```  
+        this.item = {
+            name: "Hallo Welt",
+            desc: "",
+            icon: "Font Awesome Icons (5.2.0) oder Bildquelle",
+        }
 
-**Alle .mp4 Filme über einem GB** [Mehr](https://github.com/otsmr/filesearch#sizestring)
-- ```>*.mp4 -size >=1g```  
-- ```>* -size >=1g -ext mp4```  
+    }
 
-[Mehr Beispiele](https://github.com/otsmr/filesearch#extstringarray)
+    register () {
 
+        this.handlelist.register({
+            ...this.item,
+            id: this.id,
 
-
-## Lesezeichen
-Lesezeichen von Firefox und Google Chrome durchsuchen. 
-* Prefix: **b**
-
-
-
-## Taschenrechner
-![Rechner](./docs/img/calc.png)
-
-
-
-## Duden
-
-Wörter auf [duden.de](https://duden.de) nachschlagen
-* Prefix: **duden**
-
-![Duden](./docs/img/duden.png)
+            // immer auslösen
+            always: (query) => {
+                return this.render(query); // Boolean: Liste hier stoppen?
+            },
 
 
+            // bei einem bestimmten Präfix auslösen
+            prefix: this.prefix,
+            onInput: (q, sendID) => {
+                return true;
+            }, 
 
-## Dateiexplorer  *(Windows)*
-
-Schnellzugriff auf Dateien und Ordner
-* Prefix: **=**
-
-![Explorer](./docs/img/explorer.png)
-
-
-
-## OnTop
-
-* Prefix: **top**
-
-Webseiten in einem Popup Fenster öffnen, dass sich immer ganz oben befindet
-
-![Popup](./docs/img/youtubepopup.png)
-
-## Programme *(Windows)*
-
-Nach Programmen suchen
-
-![Programme](./docs/img/programm.png)
+            // Zur Liste hinzufügen
+            addToList: (query) => {
+                return [];
+            },
 
 
+            // ein Element aus der Liste wurde ausgewählt
+            onSelect: (q, item, sendID) => {
+                console.log("Select: ", item);
+            }
+        })
 
-## Schnellstarter
+    }
 
-Computer schnell Herunterfahren, Neu Starten, ... 
+    render (query) {
 
-![Schnellstarter](./docs/img/quick.png)
+        this.send({
+            ...this.item,
+            name: "Hallo Welt",
+            desc: "Eingabe: " + query
+        })
+        return true; // Wird Syncron hinzugefügt 
+        
+    }
 
+}
 
-## Übersetzer
+module.exports = (handlelist, mainWindow) => {
 
-Schnell mit **Google Translate** Texte übersetzen
+    new EigenesModul(handlelist, mainWindow).register();
 
-![Übersetzer](./docs/img/translate.png)
-## Speedtest
-
-![Speedtest](./docs/img/speed.png)
-
-
-## Suchmaschinen
-
-Schnellzugriff auf Suchmaschinen  
-Engine hinzufügen unter *config*  
-
-![Suchmaschinen](./docs/img/engine.png)
-
-
-**Autocomplete**
-
-![Autocomplete](./docs/img/autocomplete.png)
+}
+```
 
 
-## Wetter
-Schnellzugriff auf die Wetterdaten von [wetter.com](https://wetter.com)
-
-![Wetter](./docs/img/wetter.png)
 
 
-## YouTube
-Zugriff auf YouTube Abos mit [oabos.de](https://oabos.de)
-
-![YouTube Liste](./docs/img/youtube.png)
-
-**Popup**  
-Videos werden in einem Popup Fenster geöffnet, welches sich immer ganz oben befindet
-
-![YouTube Popup](./docs/img/youtubepopup.png)
+# Copyright und Lizenz
+Copyright by <a href="https://tsmr.eu">TSMR</a>
