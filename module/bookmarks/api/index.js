@@ -1,15 +1,18 @@
 const fs = require("fs");
 let browser = "Firefox";
+let id = 10;
 const mapBookmarks = (e) => {
+    id++;
     if (e.name === "") {
         let n = e.url
             .replace("https://", "")
             .replace("http://", "");
         e.name = n.slice(0, n.indexOf("/"));
     }
+    e.id = id;
     e.desc = browser + ` in ${e.folder} (${e.url})`;
-    e.type= "website";
-    if (!e.icon.startsWith("fa-")) e.icon = "https://proxy.oabos.de/" + e.icon;
+    e.type = "website";
+    if (!e.icon.startsWith("fa-")) e.icon = e.icon;
     return e;
 }
 
@@ -43,17 +46,6 @@ module.exports = (force = false) => {
 
     if (!fs.existsSync(home)) {
         fs.mkdirSync(home);
-    }
-
-    try {
-        const listFile = fs.statSync(home + "list.json");
-        const birth = new Date(listFile.mtime).getTime();
-        const d = new Date();
-        d.setDate(d.getDate() - 1);
-        const last24 = d.getTime();
-        if (birth < last24) force = true;
-    } catch (error) {
-        force = true;
     }
     
     if (force) {
