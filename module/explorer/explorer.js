@@ -15,7 +15,8 @@ class Explorer extends Module {
             config: {
                 show: {
                     copypath: true,
-                    openinexplorer: true
+                    openinexplorer: true,
+                    cmd: true
                 },
                 prefix: "="
             }
@@ -113,10 +114,11 @@ class Explorer extends Module {
             copy: copy,
             id: array.length
         });
+        
         try {
-            if (this.config.show.openinexplorer) {
-                const dir = path.join(folder, "");
-                if (fs.lstatSync(dir).isDirectory()) {
+            const dir = path.join(folder, "");
+            if (fs.lstatSync(dir).isDirectory()) {
+                if (this.config.show.openinexplorer) {
                     array.unshift({
                         name: "Im Explorer öffnen",
                         icon: process.launcher.imgPath + "windows/explorer.png",
@@ -124,8 +126,16 @@ class Explorer extends Module {
                         type: "command",
                         command: "start explorer \"" + dir + "\"",
                         id: array.length
-                    })
+                    });
                 }
+                if (this.config.show.cmd) array.push({
+                    name: "Konsole hier öffnen",
+                    icon: process.launcher.imgPath + "windows/cmd.png",
+                    desc: dir,
+                    type: "command",
+                    command: "start cmd.exe /C \"" + dir + "\"",
+                    id: array.length
+                })
             }
         } catch (error) { }
 

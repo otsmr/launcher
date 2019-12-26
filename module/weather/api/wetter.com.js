@@ -65,7 +65,7 @@ class WetterCom {
                     p = p.slice(0, p.indexOf("%") + 1)
                     res.push({
                         date,
-                        icon: "https://proxy.oabos.de/" + img.attr("data-single-src"),
+                        icon: img.attr("data-single-src"),
                         smallDesc: img.attr("alt"),
                         longDesc: img.attr("title"),
                         tempMax: item.find(".temp-max").text(),

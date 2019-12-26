@@ -14,7 +14,7 @@ class Translate extends Module {
                     "to": "en"
                 },
                 "waitAfterInput": 1000,
-                "prefix": "$"
+                "prefix": "t "
             }
         });
         this.search = search;

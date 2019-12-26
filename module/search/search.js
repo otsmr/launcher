@@ -77,6 +77,14 @@ class Search extends Module {
                         "url": "https://npms.io/search?q=$query",
                         "engine": "npms",
                         "suggestqueries": true 
+                    },
+                    {
+                        "prefix": "m ",
+                        "name": "Maps: <b>$query</b>",
+                        "desc": "Auf Google Maps nach $query suchen",
+                        "icon": "$imgPath/engine/maps.png",
+                        "url": "https://www.google.com/maps/search/$query",
+                        "engine": "maps"
                     }
                 ]
             }

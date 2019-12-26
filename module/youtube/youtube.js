@@ -15,7 +15,7 @@ class Youtube extends Module {
             }
         });
 
-        this.ytImages = `https://proxy.oabos.de/https://img.youtube.com/vi/$wID/mqdefault.jpg`
+        this.ytImages = `https://oabos.de/img/youtube.php?id=$wID`
         
         this.item = {
             name: "YouTube Feed by oabos.de",
@@ -36,7 +36,7 @@ class Youtube extends Module {
                     this.send({
                         ...this.item,
                         name: "ApiKey nicht vorhanden",
-                        desc: "ApiKey setzen: -key <apikey>"
+                        desc: "ApiKey in den Einstellungen"
                     });
                     return true;
                 }
