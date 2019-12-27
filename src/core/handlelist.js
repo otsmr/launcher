@@ -15,6 +15,7 @@ class HandleList {
         this.mainWindow = mainWindow;
         this.json = [];
         this._lastSendID = 0;
+        this._input = "";
 
         mainWindow.on("focus", () =>{
             this.importModule();
@@ -138,6 +139,7 @@ class HandleList {
 
     search (query) {
         this._lastSendID++;
+        this._input = query;
         if (query.startsWith("!")) {
             query = query.replace("!", "");
             if (query[0] === " ") query = query.substr(1);
@@ -185,6 +187,12 @@ class HandleList {
             if (q[0] === " ") q = q.substr(1);
             return item.onInput(q, this._lastSendID);
 
+        }
+
+        for (const item of this.registered){
+            if (item.ifNoPrefixMatched) {
+                item.ifNoPrefixMatched(query, this._lastSendID);
+            }
         }
 
         let exact = false;

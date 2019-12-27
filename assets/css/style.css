@@ -148,13 +148,18 @@ ul li .box .content .img {
     display: none;
 }
 
+ul li .text {
+
+    width: calc( 100% - 50px );
+}
 ul li .text > * {
     margin: 0;
     overflow: hidden;
     width: 100%;
-    text-overflow: ellipsis;
-    white-space: normal;
     text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 ul li .text h1 {
     color: #b3b3b3;
@@ -168,4 +173,11 @@ ul li .text h1 b {
 ul li .text p {
     color: #9d9d9d;
     font-size: 14px;
+}
+ul .category {
+    font-size: 14px;
+    color: #bbbbbb;
+    padding-left: 15px;
+    margin-top: 5px;
+    font-weight: bold;
 }

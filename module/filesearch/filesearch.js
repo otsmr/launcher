@@ -16,6 +16,7 @@ class FileSearch extends Module {
                     "excludefolder": [
                         "node_modules",
                         ".git",
+                        ".vscode",
                         "AppData"
                     ]
 
@@ -40,6 +41,11 @@ class FileSearch extends Module {
             id: this.id,
             prefix: this.prefix,
             noEnter: true,
+            ifNoPrefixMatched: (query, sendID) => {
+                if (query.length > 3) {
+                    this.addLiveSearch(query, sendID);
+                }
+            },
             onInput: (search, sendID) => {
                 return this.display(search, sendID);
             }, 
@@ -47,6 +53,20 @@ class FileSearch extends Module {
                 this.startSearch(query, item, sendID);
             }
         })
+
+    }
+
+    addLiveSearch (query,  sendID) {
+        
+        this.startSearch(`*${query}* -kind document,folder,picture,music,video`, null, sendID, (list, sendID) => {
+            if (this.handlelist._input !== query) return;
+            list = this.search.list(this.handlelist._input, list);
+            
+            this.send([ {
+                display: "category",
+                category: "Ordner und Dateien"
+            }].concat(list), sendID, true);
+        });
 
     }
 
@@ -75,64 +95,73 @@ class FileSearch extends Module {
 
     }
 
-    startSearch (query, item, sendID) {
+    startSearch (query, item, sendID, callBack = false) {
 
-        this.setInput(this.prefix + query, false);
-        this.send({
-            ...this.item,
-            name: "Es wird gesucht nach: <b>" + query + "</b>"
-        })
+        if (!callBack) {
+            this.setInput(this.prefix + query, false);
+            this.send({
+                ...this.item,
+                name: "Es wird gesucht nach: <b>" + query + "</b>"
+            })
+        }
 
         if (query.length < 2) return;
         if (query.indexOf(" -p") < -1) {
             query += " -path " + process.launcher.home
         }
+        try {
         
-        const search = new Search(this.config.search).searchByArgs(query).async(() => {
-            const results = search.toJSON();
-            if (results.length === 0) {
-                return this.send({
-                    ...this.item,
-                    name: "Keine Ergebnisse gefunden"
-                })
-            }
-            
-            let res = [];
-            moment.locale("de");
-            for (const treffer of results) {
-                const c = moment(parseInt(treffer.datecreated));
-                const m = moment(parseInt(treffer.datemodified))
-                
-                let desc = [
-                    treffer.itemtypetext,
-                    `Erstellt: <b>${c.fromNow()}</b>; Geändert: <b>${m.fromNow()}</b>`,
-                    treffer.fullname,
-                ];
-                let icon;
-                if (treffer.fileattributes === 16) {
-                    icon = process.launcher.imgPath + "explorer/folder.png";
-                } else {
-                    desc[0] = treffer.displaysize + ", " + desc[0];
-                    icon = fileicon(treffer.fileextension);
-                }
-                if (treffer.author) {
-                    desc.unshift("Von " + treffer.author.join(", "));
+            const search = new Search(this.config.search).searchByArgs(query).async(() => {
+                const results = search.toJSON();
+                if (results.length === 0) {
+
+                    if (!callBack)  this.send({
+                        ...this.item,
+                        name: "Keine Ergebnisse gefunden"
+                    })
+                    
+                    return;
                 }
                 
-                res.push({
-                    ...this.item,
-                    name: treffer.name,
-                    icon,
-                    desc: desc.join("<br>"),
-                    type: "application",
-                    path: treffer.fullname,
-                    id: res.length
-                });
+                let res = [];
+                moment.locale("de");
+                for (const treffer of results) {
+                    const c = moment(parseInt(treffer.datecreated));
+                    const m = moment(parseInt(treffer.datemodified))
+                    
+                    let desc = [
+                        `Zuletzt geändert: <b>${m.format("DD.MM.YYYY, H:mm")}</b>`,
+                        treffer.fullname.replace(new RegExp(treffer.name + '$'), '')
+                    ];
+                    let icon;
+                    if (treffer.fileattributes === 16) {
+                        icon = process.launcher.imgPath + "explorer/folder.png";
+                    } else {
+                        if (treffer.displaysize) desc[0] = treffer.displaysize + ", " + desc[0];
+                        icon = fileicon(treffer.fileextension);
+                    }
+                    if (treffer.author) {
+                        desc.unshift("Von " + treffer.author.join(", "));
+                    }
+                    
+                    res.push({
+                        ...this.item,
+                        name: treffer.name,
+                        icon,
+                        desc: desc.join("<br>"),
+                        type: "application",
+                        path: treffer.fullname,
+                        id: res.length
+                    });
 
-            }
-
-            this.send(res, sendID);
-        });
+                }
+                if (callBack) callBack(res, sendID);
+                else this.send(res, sendID);
+                
+            });
+        } catch (error) {
+                
+        }
 
     }
 

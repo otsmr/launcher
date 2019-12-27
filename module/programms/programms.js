@@ -34,7 +34,7 @@ class Programms extends Module {
             name: "Programmliste aktualisieren",
             desc: "Liste der Programme aktualisieren",
             icon: process.launcher.imgPath + "windows/application.png",
-            exact: "-update",
+            exact: "update",
             id: 99999,
             onSelect: () => {
                 this.mainWindow.toggleMe(true);

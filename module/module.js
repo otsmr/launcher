@@ -1,9 +1,10 @@
 "use strict";
+const search = require("./../src//core/search");
 
 module.exports = class {
 
     constructor (id, handlelist, mainWindow, defaultConfig) {
-
+        this.search = search;
         this.id = id;
         this.handlelist = handlelist;
         this.mainWindow = mainWindow;
@@ -22,10 +23,10 @@ module.exports = class {
 
     }
 
-    send (list = [], sendID = -1) {
+    send (list = [], sendID = -1, addToList = false) {
         if (sendID > -1) {
             if (sendID !== this.handlelist._lastSendID) {
-                return console.log("returned because", sendID, this.handlelist._lastSendID);
+                return console.log("returned because:", sendID, this.handlelist._lastSendID);
             }
         }
 
@@ -33,8 +34,12 @@ module.exports = class {
             list = [list];
         }
 
-        this.handlelist.json = list;
-        this.mainWindow.webContents.send("add-to-list", list);
+        if (addToList) this.handlelist.json = this.handlelist.json.concat(list);
+        else this.handlelist.json = list;
+
+        let sendComand = "add-to-list";
+        if (addToList) sendComand = "add-to-list-after";
+        this.mainWindow.webContents.send(sendComand, list);
 
     }
 
