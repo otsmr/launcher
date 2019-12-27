@@ -58,14 +58,54 @@ class FileSearch extends Module {
 
     addLiveSearch (query,  sendID) {
         
-        this.startSearch(`*${query}* -kind document,folder,picture,music,video`, null, sendID, (list, sendID) => {
-            if (this.handlelist._input !== query) return;
-            list = this.search.list(this.handlelist._input, list);
-            
-            this.send([ {
-                display: "category",
-                category: "Ordner und Dateien"
-            }].concat(list), sendID, true);
+        this.startSearch(`*${query.split(" ").join("*")}*`, null, sendID, (list, sendID) => {
+
+            this.startSearch(`* -c "*${query.split(" ").join("*")}*"`, null, sendID, (containList) => {
+
+                if (list.length !== 0) {
+                    if (this.handlelist._input !== query) return;
+                    list = this.search.list(this.handlelist._input, list);
+                    list = list.sort((a, b)=>{
+                        if (a.fileType === "folder" && b.fileType !== "folder") return -1;
+                        if (a.fileType !== "folder" && b.fileType === "folder") return 1;
+    
+                        if (a.points > b.points) return -1;
+                        else return 1;
+                    });
+    
+                    if (list[0].fileType === "folder") list.unshift({
+                        display: "category",
+                        category: "Ordner"
+                    });
+                    list.find((e, i)=>{
+                        if (e.display !== "category" && e.fileType !== "folder") {
+                            list.splice(i, 0, {
+                                display: "category",
+                                category: "Dateien"
+                            });
+                            return true;
+                        }
+                    });
+                }
+                if (containList.length > 0) {
+                    
+                    list.push({
+                        display: "category",
+                        category: "inhaltliche Übereinstimmung"
+                    });
+                    list = list.concat(containList);
+
+                }
+                let id = 0;
+                list = list.map(e => {
+                    id++;
+                    e.id = id;
+                    return e;
+                })
+                
+                this.send(list, sendID, true);
+
+            });
         });
 
     }
@@ -118,7 +158,8 @@ class FileSearch extends Module {
                     if (!callBack)  this.send({
                         ...this.item,
                         name: "Keine Ergebnisse gefunden"
-                    })
+                    });
+                    else callBack([]);
                     
                     return;
                 }
@@ -134,8 +175,10 @@ class FileSearch extends Module {
                         treffer.fullname.replace(new RegExp(treffer.name + '$'), '')
                     ];
                     let icon;
+                    treffer.fileType = "file";
                     if (treffer.fileattributes === 16) {
                         icon = process.launcher.imgPath + "explorer/folder.png";
+                        treffer.fileType = "folder";
                     } else {
                         if (treffer.displaysize) desc[0] = treffer.displaysize + ", " + desc[0];
                         icon = fileicon(treffer.fileextension);
@@ -146,6 +189,7 @@ class FileSearch extends Module {
                     
                     res.push({
                         ...this.item,
+                        fileType: treffer.fileType,
                         name: treffer.name,
                         icon,
                         desc: desc.join("<br>"),
@@ -160,7 +204,7 @@ class FileSearch extends Module {
                 
             });
         } catch (error) {
-                
+            console.log(error);
         }
 
     }

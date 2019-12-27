@@ -20,9 +20,9 @@ class List {
         })
     }
 
-    addToList (json, onlyAfter = false) {
+    addToList (json, onlyAfter = false,) {
         
-        if (json.length === 0) {
+        if (json.length === 0 || $("input").val() === "") {
             this.$ul.fadeOut(0).empty();
             return;
         }
