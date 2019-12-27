@@ -46,5 +46,8 @@ module.exports = class {
     setInput (data, search = true) {
         this.mainWindow.webContents.send("toinput", data, search);
     }
+    setLoader (enabled = false) {
+        this.mainWindow.webContents.send("loader", enabled);
+    }
 
 }

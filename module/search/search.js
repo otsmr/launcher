@@ -19,7 +19,7 @@ class Search extends Module {
                 "waitAfterInput": 500,
                 "engines": [
                     {
-                        "prefix": "w ",
+                        "prefix": "wi ",
                         "name": "Wikipedia: <b>$query</b>",
                         "desc": "Auf Wikipedia nach $query suchen",
                         "icon": "$imgPath/engine/wikipedia.png",

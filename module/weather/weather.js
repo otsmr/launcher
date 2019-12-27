@@ -9,7 +9,7 @@ class Weather extends Module {
         super("weather.wettercom", a, b, {
             "enabled": true,
             "config": {
-                "prefix": "wetter "
+                "prefix": "w "
             }
         });
 

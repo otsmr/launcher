@@ -8,6 +8,10 @@ module.exports = [
         id: "calc.launcher"
     },
     {
+        installer: require("./console/console"),
+        id: "console.launcher"
+    },
+    {
         installer: require("./duden/duden"),
         id: "duden.dudende"
     },

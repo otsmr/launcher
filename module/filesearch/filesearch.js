@@ -42,9 +42,7 @@ class FileSearch extends Module {
             prefix: this.prefix,
             noEnter: true,
             ifNoPrefixMatched: (query, sendID) => {
-                if (query.length > 3) {
-                    this.addLiveSearch(query, sendID);
-                }
+                this.addLiveSearch(query, sendID);
             },
             onInput: (search, sendID) => {
                 return this.display(search, sendID);
@@ -56,56 +54,69 @@ class FileSearch extends Module {
 
     }
 
+    addResults (query, sendID, list, containList = []) {
+        if (list.length !== 0) {
+            if (this.handlelist._input !== query) return;
+            list = this.search.list(this.handlelist._input, list);
+            list = list.sort((a, b)=>{
+                if (a.fileType === "folder" && b.fileType !== "folder") return -1;
+                if (a.fileType !== "folder" && b.fileType === "folder") return 1;
+
+                if (a.points > b.points) return -1;
+                else return 1;
+            });
+
+            if (list[0].fileType === "folder") list.unshift({
+                display: "category",
+                category: "Ordner"
+            });
+            list.find((e, i)=>{
+                if (e.display !== "category" && e.fileType !== "folder") {
+                    list.splice(i, 0, {
+                        display: "category",
+                        category: "Dateien"
+                    });
+                    return true;
+                }
+            });
+        }
+        if (containList.length > 0) {
+            
+            list.push({
+                display: "category",
+                category: "inhaltliche Übereinstimmung"
+            });
+            list = list.concat(containList);
+
+        }
+        let id = 0;
+        list = list.map(e => {
+            id++;
+            e.id = id;
+            return e;
+        })
+        
+        this.send(list, sendID, true);
+
+    }
+
     addLiveSearch (query,  sendID) {
+
+        
+        if (query.length <= 3) return;
+        this.setLoader(true);
         
         this.startSearch(`*${query.split(" ").join("*")}*`, null, sendID, (list, sendID) => {
-
+            this.setLoader(false);
+            
+            if (query.length <= 5) return this.addResults(query, sendID, list);
+            this.setLoader(true);
+            
             this.startSearch(`* -c "*${query.split(" ").join("*")}*"`, null, sendID, (containList) => {
-
-                if (list.length !== 0) {
-                    if (this.handlelist._input !== query) return;
-                    list = this.search.list(this.handlelist._input, list);
-                    list = list.sort((a, b)=>{
-                        if (a.fileType === "folder" && b.fileType !== "folder") return -1;
-                        if (a.fileType !== "folder" && b.fileType === "folder") return 1;
-    
-                        if (a.points > b.points) return -1;
-                        else return 1;
-                    });
-    
-                    if (list[0].fileType === "folder") list.unshift({
-                        display: "category",
-                        category: "Ordner"
-                    });
-                    list.find((e, i)=>{
-                        if (e.display !== "category" && e.fileType !== "folder") {
-                            list.splice(i, 0, {
-                                display: "category",
-                                category: "Dateien"
-                            });
-                            return true;
-                        }
-                    });
-                }
-                if (containList.length > 0) {
-                    
-                    list.push({
-                        display: "category",
-                        category: "inhaltliche Übereinstimmung"
-                    });
-                    list = list.concat(containList);
-
-                }
-                let id = 0;
-                list = list.map(e => {
-                    id++;
-                    e.id = id;
-                    return e;
-                })
-                
-                this.send(list, sendID, true);
-
+                this.setLoader(false);
+                this.addResults(query, sendID, list, containList);
             });
+
         });
 
     }
@@ -204,7 +215,7 @@ class FileSearch extends Module {
                 
             });
         } catch (error) {
-            console.log(error);
+            this.setLoader(false);
         }
 
     }

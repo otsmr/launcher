@@ -18,6 +18,12 @@ class List {
         ipcRenderer.on("add-to-list-after", (event, json) => {
             this.addToList(json, true);
         })
+        this.input = "";
+
+        ipcRenderer.on("loader", (event, enabled) => {
+            if (enabled) $(".img img").addClass("fa-spin");
+            else  $(".img img").removeClass("fa-spin");
+        })
     }
 
     addToList (json, onlyAfter = false,) {
@@ -126,6 +132,10 @@ class List {
 
     search () {
         let input = $("input").val();
+        
+        if (input === this.input) return;
+        this.input = input;
+
         if (input[0] === "=") {
             $("input").val(input.replace(/\\/g, "/"));
             input = $("input").val();
@@ -133,9 +143,7 @@ class List {
         if (input === "") {
             $("ul").empty().fadeOut(0);
         } else {
-
             ipcRenderer.send('list-search', input);
-            
         }
     }
 
