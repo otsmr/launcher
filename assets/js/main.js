@@ -28,7 +28,7 @@ class List {
 
     addToList (json, onlyAfter = false) {
 
-        if (onlyAfter && json.length) return;
+        if (onlyAfter && json.length === 0) return;
         
         if (json.length === 0 || $("input").val() === "") {
             this.$ul.fadeOut(0).empty();

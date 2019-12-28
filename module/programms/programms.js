@@ -12,7 +12,11 @@ class Programms extends Module {
 
         this.home = home;
         this.crawler = require("./crawler/" + process.launcher.platform + ".js");
-
+        this.item = {
+            name: "Programmliste aktualisieren",
+            desc: "Liste der Programme aktualisieren",
+            icon: process.launcher.imgPath + "windows/application.png"
+        }
     }
 
     register () {
@@ -31,15 +35,13 @@ class Programms extends Module {
         const list = this.crawler(this.home);
 
         list.push({
-            name: "Programmliste aktualisieren",
-            desc: "Liste der Programme aktualisieren",
-            icon: process.launcher.imgPath + "windows/application.png",
+            ...this.item,
             exact: "update",
             id: 99999,
             onSelect: () => {
-                this.mainWindow.toggleMe(true);
+                this.setLoader(true);
                 this.crawler(this.home, true)
-                this.mainWindow.toggleMe(false);
+                this.setLoader(false);
             }
         });
         return list;

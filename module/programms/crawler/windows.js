@@ -86,10 +86,20 @@ class Crawler {
             "InstallLocation"
         ]);
 
+        const openMe = [
+            {
+                name: "Microsoft.MicrosoftEdge",
+                command: "start microsoft-edge:"
+            },
+            {
+                name: "Microsoft.MSPaint",
+                command: "start ms-paint:"
+            }
+        ]
+
         const allowed = [
-            "Microsoft.MicrosoftEdge",
             "Microsoft.MSPaint",
-            "Microsoft.MicrosoftMahjong",
+            "Microsoft.MicrosoftEdge",
             "Microsoft.Alarms",
             "Microsoft.WindowsStore",
             "Microsoft.Windows.Photos",
@@ -148,6 +158,7 @@ class Crawler {
 
         let appList = [];
         for (const app of apps) {
+            
             if (allowed.indexOf(app.Name) === -1){
                 const name = app.Name.toLowerCase();
                 if (name.startsWith("microsoft.")) continue;
@@ -155,10 +166,15 @@ class Crawler {
                 if (app.InstallLocation.startsWith("C:\\Windows\\SystemApps\\")) continue;
             }
             const manifest = getManifest(app);
+            let command = openApxPS(app.Name, manifest.zune);
+            const isInOpenMe = openMe.find(e => e.name === app.Name);
+            if (isInOpenMe) {
+                command = isInOpenMe.command
+            }
             appList.push({
                 ...manifest,
                 type: "commandps",
-                command: openApxPS(app.Name, manifest.zune)
+                command
             });
         }
 
