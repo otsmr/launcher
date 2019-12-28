@@ -108,7 +108,7 @@ class FileSearch extends Module {
         
         this.startSearch(`*${query.split(" ").join("*")}*`, null, sendID, (list, sendID) => {
             this.setLoader(false);
-            this.addResults(query, sendID, list);
+            if (list.length !== 0) this.addResults(query, sendID, list);
             if (query.length <= 5 || list.length > 10) return;
             this.setLoader(true);
             
