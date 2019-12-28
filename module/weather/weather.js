@@ -70,8 +70,9 @@ class Weather extends Module {
             name: "Wetter wird geladen"
         })
         this.setInput(this.prefix + query, false);
-        
+        this.setLoader(true);
         weather.forecast(item.code, (json) => {
+            this.setLoader(false);
 
             let list = [];
 

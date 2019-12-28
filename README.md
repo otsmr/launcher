@@ -13,7 +13,8 @@
     <a href="https://github.com/otsmr/launcher/releases"><strong>-- Download --</strong></a>
     <br>
     <br>
-    <img src="https://img.shields.io/badge/platform-windows-%23097aba" alt="Platform">
+    <img src="https://img.shields.io/badge/Platform-windows-%23097aba" alt="Platform">
+    <a href="https://paypal.me/otsmr"><img src="https://img.shields.io/badge/PayPal-Kaffee spendieren-%23097aba" alt="Kaffee"></a>
 </p>
 
 ![Launcher](/docs/img/launcher.gif "Launcher")

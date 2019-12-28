@@ -138,6 +138,7 @@ ul li .box {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
+    width: 100%;
 }
 
 ul li .box .img {
@@ -148,14 +149,16 @@ ul li .box .img {
 ul li .box .content .img {
     display: none;
 }
-
+ul li .box .content {
+    flex: 1;
+    width: 100%;
+    max-width: calc( 100% - 150px );
+}
 ul li .text {
-
     width: calc( 100% - 50px );
 }
 ul li .text > * {
     margin: 0;
-    overflow: hidden;
     width: 100%;
     text-align: left;
     text-overflow: ellipsis;

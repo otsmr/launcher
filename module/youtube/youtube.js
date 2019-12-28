@@ -31,12 +31,12 @@ class Youtube extends Module {
             ...this.item,
             id: this.id,
             prefix: this.config.prefix,
-            onInput: () => {
+            onInput: (query, sendID) => {
                 if (!this.config.apikey|| this.config.apikey === "") {
                     this.send({
                         ...this.item,
-                        name: "ApiKey nicht vorhanden",
-                        desc: "ApiKey in den Einstellungen"
+                        name: "ApiKey nicht in den Einstellungen",
+                        desc: "Den ApiKey gibt es unter 'view-source:https://oabos.de/'."
                     });
                     return true;
                 }
@@ -44,49 +44,42 @@ class Youtube extends Module {
                     ...this.item,
                     id: 0
                 });
+                
+                this.showFeed(sendID);
                 return true;
                 
             },
             onSelect: (query, item, sendID) => {
-                this.showFeed(sendID, item);
+                if (item.video) {
+                    this.window = new BrowserWindow({
+                        height: 475,
+                        width: 800,
+                        center: true,
+                        icon: process.launcher.imgPath + "engine/youtube.png",
+                        alwaysOnTop: true,
+                        darkTheme: true,
+                        title: item.name + ' - YouTube'
+                    });
+                    const pos = new Positioner(this.window);
+                    pos.move("center");
+                    this.window.loadURL(item.link);
+                    this.window.removeMenu();
+                    this.mainWindow.toggleMe(true);
+                    return;
+                }
             }
         })
 
     }
 
-    showFeed (sendID, item) {
-        
-        if (item.video) {
+    showFeed (sendID, callBack) {
 
-            this.window = new BrowserWindow({
-                height: 475,
-                width: 800,
-                center: true,
-                icon: process.launcher.imgPath + "engine/youtube.png",
-                alwaysOnTop: true,
-                darkTheme: true,
-                title: item.name + ' - YouTube'
-            });
-            const pos = new Positioner(this.window);
-            pos.move("center");
-            this.window.loadURL(item.link);
-            this.window.removeMenu();
-            this.mainWindow.toggleMe(true);
-            return;
-        }
         this.setInput(this.prefix, false);
 
-        if (this.config.apikey === "") {
-            return this.send({
-                ...this.item,
-                name: "API-Key nicht gefunden",
-                desc: "Einstellungen öffnen",
-                type: "application",
-                path: process.launcher.appData + "/config.json",
-            });
-        }
-
+        this.setLoader(true);
         request(`https://oabos.de/?apikey=${this.config.apikey}`, (err, res, req) => {
+            this.setLoader(false);
+
             try {
                 const json = JSON.parse(res.body);
                 const getName = (id) =>{
@@ -140,7 +133,7 @@ class Youtube extends Module {
                             </div>`
                         },
                         link: "https://www.youtube.com/embed/" + wID,
-                        desc: `Von <b>${getName(item.id)}</b> hochgeladen am <b>${item.date}</b>`
+                        desc: `Von <b>${getName(item.id)}</b> hochgeladen vor <b>${item.date}</b>`
                     });
                     id++;
                 }   

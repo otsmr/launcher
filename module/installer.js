@@ -40,10 +40,6 @@ module.exports = [
         id: "search.launcher"
     },
     {
-        installer: require("./speedtest/speedtest"),
-        id: "speedtest.launcher"
-    },
-    {
         installer: require("./translate/translate"),
         id: "translate.google"
     },
