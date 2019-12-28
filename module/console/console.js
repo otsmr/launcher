@@ -1,6 +1,5 @@
 "use strict";
 const Module = require("../module");
-const { spawn } = require('child_process');
 
 class Console extends Module {
 

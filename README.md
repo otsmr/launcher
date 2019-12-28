@@ -61,7 +61,7 @@ class EigenesModul extends Module {
         this.item = {
             name: "Hallo Welt",
             desc: "",
-            icon: "Font Awesome Icons (5.2.0) oder Bildquelle",
+            icon: "Font Awesome Icons (5.10.2) oder Bildquelle",
         }
 
     }

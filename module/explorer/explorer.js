@@ -119,7 +119,7 @@ class Explorer extends Module {
             const dir = path.join(folder, "");
             if (fs.lstatSync(dir).isDirectory()) {
                 if (this.config.show.openinexplorer) {
-                    array.unshift({
+                    array.push({
                         name: "Im Explorer öffnen",
                         icon: process.launcher.imgPath + "windows/explorer.png",
                         desc: dir,
@@ -133,7 +133,7 @@ class Explorer extends Module {
                     icon: process.launcher.imgPath + "windows/cmd.png",
                     desc: dir,
                     type: "command",
-                    command: "start cmd.exe /C \"" + dir + "\"",
+                    command: "start cmd.exe /k \"cd " + dir + "\"",
                     id: array.length
                 })
             }

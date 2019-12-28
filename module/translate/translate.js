@@ -118,7 +118,8 @@ class Translate extends Module {
         if (input[0] === " ") input = input.substr(1);
 
         if (this.timeout) clearTimeout(this.timeout);
-        
+        this.setLoader(false);
+
         let data = {
             source: this.config.translate.from,
             target: this.config.translate.to,
@@ -146,11 +147,14 @@ class Translate extends Module {
 
         if (data.text === "" || data.text === this.prefix) return;
 
+        this.setLoader(true);
         this.timeout = setTimeout(() => {
 
             try {
-                
+                this.setLoader(true);
                 translate(data, (result) => {
+                    this.setLoader(false);
+
                     let list = []
                     if (!result.translation) {
                         list.push({
@@ -178,6 +182,8 @@ class Translate extends Module {
                 });
             } catch (error) {
                 console.log("ERROR");
+                this.setLoader(false);
+
             }
             
         }, this.config.waitAfterInput || 1000);

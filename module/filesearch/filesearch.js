@@ -108,13 +108,14 @@ class FileSearch extends Module {
         
         this.startSearch(`*${query.split(" ").join("*")}*`, null, sendID, (list, sendID) => {
             this.setLoader(false);
-            
-            if (query.length <= 5) return this.addResults(query, sendID, list);
+            this.addResults(query, sendID, list);
+            if (query.length <= 5 || list.length > 10) return;
             this.setLoader(true);
             
             this.startSearch(`* -c "*${query.split(" ").join("*")}*"`, null, sendID, (containList) => {
                 this.setLoader(false);
-                this.addResults(query, sendID, list, containList);
+                if (containList.length === 0) return;
+                this.addResults(query, sendID, [], containList);
             });
 
         });
@@ -193,9 +194,6 @@ class FileSearch extends Module {
                     } else {
                         if (treffer.displaysize) desc[0] = treffer.displaysize + ", " + desc[0];
                         icon = fileicon(treffer.fileextension);
-                    }
-                    if (treffer.author) {
-                        desc.unshift("Von " + treffer.author.join(", "));
                     }
                     
                     res.push({

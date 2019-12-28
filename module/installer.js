@@ -24,6 +24,10 @@ module.exports = [
         id: "filesearch.launcher"
     },
     {
+        installer: require("./icons/icons"),
+        id: "icons.launcher"
+    },
+    {
         installer: require("./programms/programms"),
         id: "programms.launcher"
     },

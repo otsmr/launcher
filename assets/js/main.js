@@ -21,8 +21,8 @@ class List {
         this.input = "";
 
         ipcRenderer.on("loader", (event, enabled) => {
-            if (enabled) $(".img img").addClass("fa-spin");
-            else  $(".img img").removeClass("fa-spin");
+            if (enabled) $("header .img img").addClass("fa-spin");
+            else  $("header .img img").removeClass("fa-spin");
         })
     }
 
@@ -71,7 +71,8 @@ class List {
         }
         this.$ul[0].scrollTop = 0;
         this.$ul.append(html);
-        this.$ul.children("li").eq(0).addClass("aktiv");
+    
+        if (!onlyAfter || this.$ul.children("li.aktiv").length === 0) this.$ul.children("li").eq(0).addClass("aktiv");
     }
 
     changeAktiv (dir) {
