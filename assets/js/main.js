@@ -80,6 +80,7 @@ class List {
     changeAktiv (dir) {
 
         let $aktiv = this.$ul.children("li.aktiv");
+        if ($aktiv.length === 0) return;
         let index = $aktiv.index("li");
         if (dir === "ArrowUp") {
             index--;
@@ -158,11 +159,33 @@ const list = new List();
 $(()=>{
 
     // let timer;
+    let isDown = false;
+    let downIntervall = null;
+    $("input").keydown(e => {
+
+        if (isDown) return;
+        isDown = true;
+        if (downIntervall) clearInterval(downIntervall);
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            setTimeout(() => {
+                if (!isDown) return;
+                if (downIntervall) clearInterval(downIntervall);
+    
+                downIntervall = setInterval(() => {
+                    if (!isDown) return;
+                    list.changeAktiv(e.key);
+                }, 250);
+            }, 500);
+        }
+
+    })
     
     $("input").keyup((e)=>{
+        isDown = false;
+        if (downIntervall) clearInterval(downIntervall);
 
         switch (e.key) {
-            case "ArrowUp": list.changeAktiv(e.key); break;
+            case "ArrowUp": list.changeAktiv(e.key);break;
             case "ArrowDown": list.changeAktiv(e.key); break;
             case "Enter": list.enter(); break;
             default: list.search(); break;

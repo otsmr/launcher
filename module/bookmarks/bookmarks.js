@@ -36,24 +36,28 @@ class Bookmarks extends Module {
 
     }
 
-    async display (query, sendID) {
+    display (query, sendID) {
 
         if (query.startsWith("-")) {
-            if (query === "-update") {
+            if (query === "-u") {
                 this.setInput(this.prefix, false);
-                return this.send(getBookmarks(true));
+                return getBookmarks(this, (list) => {
+                    this.send(list);
+                }, true);
             }
             return this.send({
                 ...this.item,
                 name: "Parameter nicht bekannt",
-                desc: "Aktualisieren: -update"
+                desc: "Aktualisieren: -u"
             })
         }
 
         if (query === "") {
             this.send(this.item);
         } else {
-            this.send(this.search.list(query, await getBookmarks()));
+            getBookmarks(this, (list) => {
+                this.send(this.search.list(query, list));
+            })
         }
     }
 

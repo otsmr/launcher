@@ -2,6 +2,22 @@
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+::-webkit-scrollbar {
+    height: 12px;
+    width: 8px;
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9c9c9c;
+}
+
+::-webkit-scrollbar-corner {
+    /* background: #000; */
+    display: none;
+}
+
 body {
     margin: 0;
     overflow: hidden;
@@ -80,7 +96,7 @@ ul {
     background: #2A2A2A;
     margin-top: 0px;
     max-height: 300px;
-    overflow: hidden;
+    overflow: auto;
     position: relative;
     display: none;
 }

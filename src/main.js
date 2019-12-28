@@ -118,6 +118,10 @@ if (app.requestSingleInstanceLock()) {
 
         if (!ret) console.log("Shortcut:", 'registration failed');
 
+        // mainWindow.webContents.openDevTools({
+        //     mode: "undocked"
+        // })
+
     });
 
 } else app.quit();

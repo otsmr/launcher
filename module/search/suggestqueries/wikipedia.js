@@ -12,7 +12,14 @@ module.exports = (string, call) => {
         let json = [];
         try {
             json = JSON.parse(iconv.decode(new Buffer.from(body), "ISO-8859-1"))[1];
-        } catch (error) { }   
+        } catch (error) { }
+        json = json.map(e => {
+            return {
+                name: e,
+                url: "https://de.wikipedia.org/wiki/" + e,
+                desc: "Artikel öffnen"
+            }
+        });
         call(json);
 
     });
