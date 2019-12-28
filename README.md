@@ -16,7 +16,7 @@
     <img src="https://img.shields.io/badge/platform-windows-%23097aba" alt="Platform">
 </p>
 
-
+![Launcher](/docs/img/launcher.gif "Launcher")
 
 # Inhaltsverzeichnis
 * <a href="#quickstart">Quickstart</a>

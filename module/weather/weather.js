@@ -32,7 +32,7 @@ class Weather extends Module {
                 return this.display(name, sendID);
             },
             onSelect: (query, item, sendID) => {
-                this.search(query, item, sendID)
+                this.findWeather(query, item, sendID)
             }
         })
 
@@ -64,7 +64,7 @@ class Weather extends Module {
         return true;
     }
 
-    search(query, item, sendID) {
+    findWeather(query, item, sendID) {
         this.send({
             ...this.item,
             name: "Wetter wird geladen"
