@@ -31,6 +31,46 @@ Auf der [Release Page](https://github.com/otsmr/launcher/releases) gibt es den I
 
 # Module
 
+## Alles finden – schneller als je zuvor
+
+Wenn du an deinem Computer arbeiten, hast du ein Ziel. Ob groß oder klein, für die Arbeit oder zum Spaß - Launcher findet schnell das gewünschte Programm oder die verlorene Datei.
+
+![Suche](/docs/img/paint.png "Suche")
+
+## Tools für jede Lebenslage
+
+Launcher hat alles, was du brauchen, um deinen Computer effizient zu nutzen – zum Beispiel schnelle Ordner- und Dateisuche, Übersetzungen, Wetter und den Explorer erreichbar durch Tasten.
+
+<p align="center">Übersetzung öffnen mit <code>t</code></p>
+
+![Übersetzen](/docs/img/translate.png "Übersetzen")
+
+<p align="center">Wetter öffnen mit <code>w</code></p>
+
+![Wetter](/docs/img/wetter.png "Wetter")
+
+<p align="center">Explorer öffnen mit <code>=</code></p>
+
+![Explorer](/docs/img/explorer.png "Explorer")
+
+
+## Surfen ist beim Launcher selbstverständlich
+
+Du willst dich nicht für eine Suchmaschine entscheiden? Das musst du auch nicht. Launcher bietet viele verschiedene Suchmaschinen mit Autovervollständigen.
+
+| Suchmaschine | Prefix |
+|---|---|
+| DuckDuckGo Black Theme | d |
+| DuckDuckGo | dl |
+| Wikipedia | wi |
+| Startpage | s |
+| NPM | npm |
+| Google Maps | m |
+| Google | g |
+
+![Suchmaschinen](/docs/img/wiki.png "Suchmaschinen")
+
+
 # Dokumenation
 
 ## Kompilieren
