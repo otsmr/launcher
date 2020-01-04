@@ -27,19 +27,19 @@
 
 # Quickstart
 
-Auf der [Release Page](https://github.com/otsmr/launcher/releases) gibt es den Installer für Windows zum herunterladen.
+Auf der [Release Page](https://github.com/otsmr/launcher/releases) gibt es den Installer für Windows zum Herunterladen.
 
 # Module
 
 ## Alles finden – schneller als je zuvor
 
-Wenn du an deinem Computer arbeiten, hast du ein Ziel. Ob groß oder klein, für die Arbeit oder zum Spaß - Launcher findet schnell das gewünschte Programm oder die verlorene Datei.
+Launcher findet schnell das gewünschte Programm oder die verlorene Datei.
 
 ![Suche](/docs/img/paint.png "Suche")
 
 ## Tools für jede Lebenslage
 
-Launcher hat alles, was du brauchen, um deinen Computer effizient zu nutzen – zum Beispiel schnelle Ordner- und Dateisuche, Übersetzungen, Wetter und den Explorer erreichbar durch Tasten.
+Launcher hat alles, was du brauchst, um deinen Computer effizient zu nutzen.
 
 <p align="center">Übersetzung öffnen mit <code>t</code></p>
 
@@ -56,7 +56,6 @@ Launcher hat alles, was du brauchen, um deinen Computer effizient zu nutzen – 
 
 ## Surfen ist beim Launcher selbstverständlich
 
-Du willst dich nicht für eine Suchmaschine entscheiden? Das musst du auch nicht. Launcher bietet viele verschiedene Suchmaschinen mit Autovervollständigen.
 
 | Suchmaschine | Prefix |
 |---|---|
