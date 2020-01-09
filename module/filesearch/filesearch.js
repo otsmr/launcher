@@ -15,8 +15,10 @@ class FileSearch extends Module {
                 "search": {
                     "excludefolder": [
                         "node_modules",
+                        ".windows-build-tools",
                         ".git",
                         ".vscode",
+                        "_vendor",
                         "AppData"
                     ]
 
@@ -55,57 +57,64 @@ class FileSearch extends Module {
     }
 
     addResults (query, sendID, list, containList = []) {
-        if (list.length !== 0) {
-            if (this.handlelist._input !== query) return;
-            list = this.search.list(this.handlelist._input, list);
-            list = list.sort((a, b)=>{
-                if (a.fileType === "folder" && b.fileType !== "folder") return -1;
-                if (a.fileType !== "folder" && b.fileType === "folder") return 1;
-
-                if (a.points > b.points) return -1;
-                else return 1;
-            });
-
-            if (list[0].fileType === "folder") list.unshift({
-                display: "category",
-                category: "Ordner"
-            });
-            list.find((e, i)=>{
-                if (e.display !== "category" && e.fileType !== "folder") {
-                    list.splice(i, 0, {
-                        display: "category",
-                        category: "Dateien"
-                    });
-                    return true;
-                }
-            });
-        }
-        if (containList.length > 0) {
+        try {
             
-            list.push({
-                display: "category",
-                category: "inhaltliche Übereinstimmung"
-            });
-            list = list.concat(containList);
-
+            if (list.length !== 0) {
+                if (this.handlelist._input !== query) return;
+                const searched  = this.search.list(this.handlelist._input, list);
+                if (searched.length > 0) list = searched;
+                list = list.sort((a, b)=>{
+                    if (a.fileType === "folder" && b.fileType !== "folder") return -1;
+                    if (a.fileType !== "folder" && b.fileType === "folder") return 1;
+    
+                    if (a.points > b.points) return -1;
+                    else return 1;
+                });
+                if (list[0] && list[0].fileType === "folder") list.unshift({
+                    display: "category",
+                    category: "Ordner"
+                });
+                list.find((e, i)=>{
+                    if (e.display !== "category" && e.fileType !== "folder") {
+                        list.splice(i, 0, {
+                            display: "category",
+                            category: "Dateien"
+                        });
+                        return true;
+                    }
+                });
+            }
+            if (containList.length > 0) {
+                
+                list.push({
+                    display: "category",
+                    category: "inhaltliche Übereinstimmung"
+                });
+                list = list.concat(containList);
+    
+            }
+            let id = 0;
+            list = list.map(e => {
+                id++;
+                e.id = id;
+                return e;
+            })
+            
+            this.send(list, sendID, true);
+        } catch (error) {
+            console.log(error);
         }
-        let id = 0;
-        list = list.map(e => {
-            id++;
-            e.id = id;
-            return e;
-        })
-        
-        this.send(list, sendID, true);
 
     }
 
     addLiveSearch (query,  sendID) {
 
         
-        if (query.length <= 3) return;
+        if (query.length <= 2) return;
         this.setLoader(true);
-        
+
+        query = query.replace("-", "*");
+
         this.startSearch(`*${query.split(" ").join("*")}*`, null, sendID, (list, sendID) => {
             this.setLoader(false);
             if (list.length !== 0) this.addResults(query, sendID, list);
