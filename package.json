@@ -29,7 +29,7 @@
 		"cheerio": "^1.0.0-rc.3",
 		"electron-positioner": "^4.1.0",
 		"fetch-favicon": "0.0.2",
-		"filesearch-windows": "1.0.4",
+		"filesearch-windows": "^1.0.5",
 		"iconv-lite": "^0.5.0",
 		"moment": "^2.24.0",
 		"node-google-translate-skidz": "^1.1.2",

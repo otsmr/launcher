@@ -44,7 +44,7 @@ class Duden extends Module {
             this.send(this.item, sendID);
             return true;
         }
-
+        this.setLoader(true);
         duden.search(query, (json) => {
             
             let list = [];
@@ -60,6 +60,7 @@ class Duden extends Module {
             }
 
             this.send(list, sendID);
+            this.setLoader(false);
 
         });
 
