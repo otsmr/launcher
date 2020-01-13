@@ -8,7 +8,6 @@ class List {
         ipcRenderer.on("toinput", (event, data, search = true) => {
             $("input").val(data).focus();
             if (search) this.search();
-
         })
 
         ipcRenderer.on("add-to-list", (event, json) => {
@@ -37,7 +36,7 @@ class List {
         if (!onlyAfter) this.$ul.empty();
         this.$ul.fadeIn(0);
         let html = "";
-        for (const item of json){
+        for (const item of json) {
 
             if (item.display === "category") {
                 html += `<div class="category">${item.category}</div>`;
@@ -45,9 +44,9 @@ class List {
             }
 
             if (item.icon.startsWith("fa-")) {
-                item.icon = `<div class="icon"> <i class="${item.icon}"></i> </div>`
-            } else {
-                item.icon = `<div class="img"> <img src="${item.icon}"> </div>`
+                item.icon = `<div class="icon"><i class="${item.icon}"></i></div>`;
+            } else if (!item.icon.startsWith("<")) {
+                item.icon = `<div class="img"><img src="${item.icon}"></div>`;
             }
 
             let content = `${item.icon}
