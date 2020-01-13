@@ -9,8 +9,6 @@ const getIcons = (query) => {
     let id = 0;
     let list = [];
 
-    console.log(query);
-
     if (query.indexOf("-m") === -1) JSON.parse(JSON.stringify(fontAwesome)).map(e => { // JSON to clone
         list.push({
             ...e,
@@ -27,9 +25,7 @@ const getIcons = (query) => {
         });
     });
     
-    
     query = query.replace("-f ", "").replace("-m ", "");
-    console.log(query);
 
     if (query.length > 0) {
         list = search.list(query, list);
