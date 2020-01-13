@@ -13,7 +13,8 @@ const getIcons = (query) => {
         list.push({
             ...e,
             desc: "Font Awesome 5 (5.10.2)",
-            icon: e.icon.split(" ").reverse().join(" ")
+            icon: e.icon.split(" ").reverse().join(" "),
+            copy: e.icon.split(" ").reverse().join(" ")
         });
     });
 
@@ -21,7 +22,8 @@ const getIcons = (query) => {
         list.push({
             name: icon,
             desc: "Material Icons",
-            icon: `<div class="icon"><i class="m-icon">${icon}</i></div>`
+            icon: `<div class="icon"><i class="m-icon">${icon}</i></div>`,
+            copy: icon
         });
     });
     
@@ -35,7 +37,6 @@ const getIcons = (query) => {
         return {
             ...e,
             type: "copy",
-            copy: e.icon,
             id
         }
     })
