@@ -2,7 +2,7 @@
 
 const Module = require("../module");
 
-class Battery extends Module {
+class Calc extends Module {
 
     constructor (a, b) {
         super("calc.launcher", a, b, {
@@ -16,6 +16,8 @@ class Battery extends Module {
             icon: "fa-calculator fas",
         }
 
+        this.history = [];
+
     }
 
     register () {
@@ -25,6 +27,9 @@ class Battery extends Module {
             id: this.id,
             always: (query) => {
                 return this.calc(query);
+            },
+            afterSelected: (item) => {
+                console.log(item);
             }
         })
 
@@ -33,15 +38,52 @@ class Battery extends Module {
     calc (query) {
         try {
 
-            if (parseInt(query) != query && query[query.length-1].match(new RegExp("^[0-9]*$", "g")) && query.match(new RegExp("^[0-9\\+\\-\\/\*]*$", "g")) && query.length > 2) {
-                this.send({
+            const MathConst = [
+                "E",
+                "LN10",
+                "LN2",
+                "LOG10E",
+                "LOG2E",
+                "PI",
+                "SQRT1_2",
+                "SQRT2"
+            ].map(e => `(Math.${e})`)
+
+            const regex = `((Math.(.*?)\\\((.*?)\\\))|${MathConst.join("|")}|(\\\+)|(\\\,)|(\\\-)|(\\\*)|(\\\%)|(\\\/)|(\\\ )|(\\\()|(\\\))|([0-9]))`;
+            const checkIsNoMath = query.replace(new RegExp(regex, "g"), "");
+
+            const requiredItems = ["+", "-", "*", "%", "/"].map(e => `(\\${e})`).join("|");
+
+            if (checkIsNoMath.length === 0 && query.match(new RegExp(`(${requiredItems}|(Math))`, "g")).length > 0) {
+
+                const result = eval(query);
+
+                let list = [];
+
+                list.push({
                     ...this.item,
-                    name: this.item.name + eval(query)
-                })
+                    type: "copy",
+                    copy: String(result),
+                    id: this.history.length,
+                    desc: "Enter zum Kopieren",
+                    name: this.item.name + result,
+                    afterFired: (input, item) => {
+                        item.afterFired = null;
+                        item.name = item.name.replace("Ergebnis: ", "")
+                        item.icon = "<div class='icon'><i class='m-icon'>repeat</i></div>";
+                        item.desc = input;
+                        this.history.push(item);
+                    }
+                });
+
+                list = list.concat(this.history);
+
+                this.send(list);
                 return true;
+                
             }
         } catch (error) { 
-            console.log(error);
+            
         }
         return false;        
         
@@ -51,6 +93,6 @@ class Battery extends Module {
 
 module.exports = (handlelist, mainWindow) => {
 
-    new Battery(handlelist, mainWindow).register();
+    new Calc(handlelist, mainWindow).register();
 
 }

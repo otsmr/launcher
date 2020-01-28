@@ -206,6 +206,9 @@ module.exports = (home, force = false) => {
         return newList;
     }
 
+    if (!fs.existsSync(home + "list.json")) {
+        return [];
+    }
     return JSON.parse(fs.readFileSync(home + "list.json").toString());
 
 }

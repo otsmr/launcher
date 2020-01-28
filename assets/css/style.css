@@ -97,6 +97,7 @@ ul {
     margin-top: 0px;
     max-height: 300px;
     overflow: auto;
+    overflow-x: hidden;
     position: relative;
     display: none;
 }

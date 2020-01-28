@@ -280,6 +280,10 @@ class HandleList {
             case "shortcut": exec(`powershell "invoke-item '${run.path}'"`); break;
             case "website": shell.openExternal(run.url); break;
         }
+
+        if (run.afterFired) {
+            run.afterFired(input, run, this._lastSendID);
+        }
         
         return false;
 
