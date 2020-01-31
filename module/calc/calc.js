@@ -49,7 +49,9 @@ class Calc extends Module {
                 "SQRT2"
             ].map(e => `(Math.${e})`)
 
-            const regex = `((Math.(.*?)\\\((.*?)\\\))|${MathConst.join("|")}|(\\\+)|(\\\,)|(\\\-)|(\\\*)|(\\\%)|(\\\/)|(\\\ )|(\\\()|(\\\))|([0-9]))`;
+            query = query.replace(/,/g, ".");
+
+            const regex = `((Math.(.*?)\\\((.*?)\\\))|${MathConst.join("|")}|(\\\+)|(\\\.)|(\\\-)|(\\\*)|(\\\%)|(\\\/)|(\\\ )|(\\\()|(\\\))|([0-9]))`;
             const checkIsNoMath = query.replace(new RegExp(regex, "g"), "");
 
             const requiredItems = ["+", "-", "*", "%", "/"].map(e => `(\\${e})`).join("|");
