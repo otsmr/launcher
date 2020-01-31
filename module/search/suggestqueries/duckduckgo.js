@@ -4,7 +4,7 @@ const iconv = require('iconv-lite');
 
 module.exports = (string, call) => {
 
-    const searchURL = "https://duckduckgo.com/ac/?callback=&q=" + encodeURIComponent(string);
+    const searchURL = "https://duckduckgo.com/ac/?callback=&kl=de-de&q=" + encodeURIComponent(string);
     request({ encoding: null, method: "GET", uri: searchURL }, (err, res, body) => {
         
         if (err || res.statusCode !== 200) call([]);
