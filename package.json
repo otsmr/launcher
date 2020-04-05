@@ -1,6 +1,6 @@
 {
 	"name": "launcher",
-	"version": "1.0.1",
+	"version": "1.2.2",
 	"description": "Launcher",
 	"author": "tsmr",
 	"main": "./src/main.js",
@@ -14,7 +14,7 @@
 		"appId": "launcher",
 		"productName": "Launcher",
 		"copyright": "Copyright (c) 2020 Tobias Müller",
-		"buildVersion": "1.0.1",
+		"buildVersion": "1.2.2",
 		"win": {
 			"target": "NSIS",
 			"icon": "./assets/img/logo.png"
