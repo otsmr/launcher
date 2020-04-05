@@ -113,6 +113,8 @@ class FileSearch extends Module {
         if (query.length <= 2) return;
         this.setLoader(true);
 
+        if (typeof query !== "string") return;
+
         query = query.replace("-", "*");
 
         this.startSearch(`*${query.split(" ").join("*")}*`, null, sendID, (list, sendID) => {

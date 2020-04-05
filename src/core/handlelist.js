@@ -138,6 +138,7 @@ class HandleList {
     }
 
     search (query) {
+        
         this._lastSendID++;
         this._input = query;
         if (query.startsWith("!")) {
@@ -151,10 +152,12 @@ class HandleList {
         for (const item of this.registered){
 
             if (item.addToList) {
-                const add = item.addToList();
-                if (typeof add === "object" && add.length > 0) {
-                    list = list.concat(add);
-                }
+                try {
+                    const add = item.addToList();
+                    if (typeof add === "object" && add.length > 0) {
+                        list = list.concat(add);
+                    }
+                } catch (error) { }
             }
         }
 

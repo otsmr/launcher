@@ -58,14 +58,16 @@ class Calc extends Module {
 
             if (checkIsNoMath.length === 0 && query.match(new RegExp(`(${requiredItems}|(Math))`, "g")).length > 0) {
 
-                const result = eval(query);
+                let result = String(eval(query));
+
+                result = result.replace(".", ",");
 
                 let list = [];
 
                 list.push({
                     ...this.item,
                     type: "copy",
-                    copy: String(result),
+                    copy: result,
                     id: this.history.length,
                     desc: "Enter zum Kopieren",
                     name: this.item.name + result,
@@ -74,7 +76,7 @@ class Calc extends Module {
                         item.name = item.name.replace("Ergebnis: ", "")
                         item.icon = "<div class='icon'><i class='m-icon'>repeat</i></div>";
                         item.desc = input;
-                        this.history.push(item);
+                        this.history.unshift(item);
                     }
                 });
 
@@ -84,8 +86,7 @@ class Calc extends Module {
                 return true;
                 
             }
-        } catch (error) { 
-            
+        } catch (error) {
         }
         return false;        
         
